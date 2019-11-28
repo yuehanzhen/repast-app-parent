@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.CartItemMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.CartItem" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_sku_id" property="productSkuId" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="sp1" property="sp1" jdbcType="VARCHAR" />
+    <result column="sp2" property="sp2" jdbcType="VARCHAR" />
+    <result column="sp3" property="sp3" jdbcType="VARCHAR" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_sub_title" property="productSubTitle" jdbcType="VARCHAR" />
+    <result column="product_sku_code" property="productSkuCode" jdbcType="VARCHAR" />
+    <result column="member_nickname" property="memberNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="product_category_id" property="productCategoryId" jdbcType="BIGINT" />
+    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+    <result column="product_sn" property="productSn" jdbcType="VARCHAR" />
+    <result column="product_attr" property="productAttr" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getCartProductByMemberId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select * from oms_cart_item oci where oci.member_id=#{memberId} and oci.delete_status=1
+  </select>
+</mapper>

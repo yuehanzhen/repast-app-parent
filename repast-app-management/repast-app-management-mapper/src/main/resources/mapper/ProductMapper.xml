@@ -50,4 +50,10 @@
      inner join pms_sku_stock pss on pp.id = pss.product_id
     where pp.delete_status = 0 and pp.publish_status = 1 and pss.stock > 0 and pp.shop_id = #{shopId}
   </select>
+    <select id="getDetailByProductId" parameterType="java.lang.Long" resultType="map">
+    select pro.*,oos.comment_overtime commentOvertime,oos.confirm_overtime confirmOvertime,oos.finish_overtime finshOvertime,oos.normal_order_overtime normalOrderOvertime from pms_product pro,oms_order_setting oos where pro.shop_id=oos.shop_id and pro.shop_id=#{id}
+  </select>
+    <update id="updateProCountByProId" parameterType="com.aaa.lee.app.domain.Product">
+    update pms_product set pms_product.stock =#{stock}  where pms_product.id=#{id}
+  </update>
 </mapper>

@@ -3,13 +3,14 @@ package com.aaa.lee.app.service;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.fallback.RepastFallBackFactory;
 import com.aaa.lee.app.vo.ShopInfoVo;
+import com.google.zxing.WriterException;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Company AAA软件教育
@@ -99,4 +100,83 @@ public interface IRepastService {
      */
     @PostMapping("/setOrder")
     int setOrder(@RequestBody List<SubmitOrderVO>  submitOrderVO);
+    /**
+     * 获取用户订单的收货地址
+     * @return
+     */
+    @GetMapping("/getMemberAddressByMemberId")
+    List<Address> getMemberAddressByMemberId(@RequestParam("memberid") Long memberid);
+    /**
+     * 通过主键id查询用户默认收货地址
+     * @return
+     */
+    @GetMapping("/getAddressByPrimaryId")
+    Address getAddressByPrimaryId();
+
+    /**
+     * 提交订单信息
+     * @return
+     */
+    @GetMapping("/submitOrder")
+    Map<String, Object> submitOrder();
+
+    /**
+     * 生成二维码
+     * @param ordersn
+     * @param payamout
+     * @throws WriterException
+     * @throws IOException
+     */
+    @GetMapping("/api/wxpay")
+    boolean generateCode(@RequestParam(value = "order_sn") String ordersn, @RequestParam(value = "pay_amount") BigDecimal payamout)throws WriterException, IOException ;
+
+    /**
+     * 调用微信支付接口
+     * @param openid
+     * @return
+     */
+    @RequestMapping(value = "/api/wxPay", method = RequestMethod.GET)
+    Map<String, Object> wxPay(@RequestParam("openid") String openid);
+
+    /**
+     * 取消订单
+     * @param ordersn
+     * @return
+     */
+    @GetMapping("/cancalOrder")
+    Boolean cancalOrder(@RequestParam("ordersn") String ordersn);
+
+    /**
+     * 确认收货
+     * @param orderSn
+     * @return
+     */
+    @GetMapping("/affirmReceipt")
+    Boolean affirmReceipt(@RequestParam("orderSn") String orderSn);
+
+    /**
+     * 微信支付接口
+     * @param ordersn
+     * @param openid
+     * @param amount
+     * @return
+     */
+    @GetMapping("/pay")
+    Map<String, Object>  pay(@RequestParam("ordersn")String ordersn, @RequestParam(name = "openid") String openid, @RequestParam(name = "amount") Float amount);
+
+    /**
+     * 恢复下单
+     * @param ordersn
+     * @param openid
+     * @return
+     */
+    @GetMapping("/toRestoreOrder")
+    public Map<String, Object> toRestoreOrder(@RequestParam("ordersn") String ordersn, @RequestParam("openid") String openid);
+
+    /**
+     * 微信支付的回调地址
+     * @throws Exception
+     */
+    @PostMapping("/wxNotify")
+    void wxNotify() throws Exception ;
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.Order" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="group_promotion_id" property="groupPromotionId" jdbcType="BIGINT" />
+    <result column="coupon_id" property="couponId" jdbcType="BIGINT" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="member_username" property="memberUsername" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="freight_amount" property="freightAmount" jdbcType="DECIMAL" />
+    <result column="promotion_amount" property="promotionAmount" jdbcType="DECIMAL" />
+    <result column="integration_amount" property="integrationAmount" jdbcType="DECIMAL" />
+    <result column="coupon_amount" property="couponAmount" jdbcType="DECIMAL" />
+    <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="source_type" property="sourceType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="order_type" property="orderType" jdbcType="INTEGER" />
+    <result column="delivery_company" property="deliveryCompany" jdbcType="VARCHAR" />
+    <result column="delivery_sn" property="deliverySn" jdbcType="VARCHAR" />
+    <result column="auto_confirm_day" property="autoConfirmDay" jdbcType="INTEGER" />
+    <result column="integration" property="integration" jdbcType="INTEGER" />
+    <result column="growth" property="growth" jdbcType="INTEGER" />
+    <result column="promotion_info" property="promotionInfo" jdbcType="VARCHAR" />
+    <result column="bill_type" property="billType" jdbcType="INTEGER" />
+    <result column="bill_header" property="billHeader" jdbcType="VARCHAR" />
+    <result column="bill_content" property="billContent" jdbcType="VARCHAR" />
+    <result column="bill_receiver_phone" property="billReceiverPhone" jdbcType="VARCHAR" />
+    <result column="bill_receiver_email" property="billReceiverEmail" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_post_code" property="receiverPostCode" jdbcType="VARCHAR" />
+    <result column="receiver_province" property="receiverProvince" jdbcType="VARCHAR" />
+    <result column="receiver_city" property="receiverCity" jdbcType="VARCHAR" />
+    <result column="receiver_region" property="receiverRegion" jdbcType="VARCHAR" />
+    <result column="receiver_detail_address" property="receiverDetailAddress" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="confirm_status" property="confirmStatus" jdbcType="INTEGER" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="use_integration" property="useIntegration" jdbcType="INTEGER" />
+    <result column="payment_time" property="paymentTime" jdbcType="TIMESTAMP" />
+    <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP" />
+    <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
+    <result column="comment_time" property="commentTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <update id="updateOrderStatus" parameterType="java.lang.String" >
+    update oms_order oo set oo.status =5 where oo.order_sn=#{ordersn}
+  </update>
+  <update id="recieptDateTime" parameterType="java.lang.String">
+    update oms_order oo set oo.receive_time = (SELECT NOW()),oo.confirm_status=1 where oo.order_sn=#{orderSn}
+  </update>
+    <update id="updateOrderStatusByOrderSn" parameterType="com.aaa.lee.app.domain.Order" >
+    update oms_order oo set oo.status =#{status} where oo.order_sn=#{ordersn}
+  </update>
+  <select id="getPayNotTimeoutOrderList" resultMap="BaseResultMap">
+    select * from oms_order oo where oo.status=0
+  </select>
+  <select id="getOrderInfoByOrderOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from oms_order where oms_order.order_sn=#{ordersn}
+  </select>
+
+</mapper>

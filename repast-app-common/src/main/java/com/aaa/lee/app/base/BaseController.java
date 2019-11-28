@@ -1,6 +1,7 @@
 package com.aaa.lee.app.base;
 
 import com.aaa.lee.app.status.LoginStatus;
+import com.aaa.lee.app.status.StatusEnum;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -96,5 +97,43 @@ public class BaseController {
     }
 
     // TODO 该类未完成，自行完成剩余的方法
+    /**
+     * 操作失败，返回自定义消息
+     * @param msg
+     * @return
+     */
+    protected ResultData failed(String msg){
+        ResultData resultData = new ResultData();
+        resultData.setCode(StatusEnum.SUCCESS.getCode());
+        resultData.setMsg(msg);
+        return resultData;
+    }
+
+    /**
+     * 操作成功，返回自定义消息和数据
+     * @param msg
+     * @param data
+     * @return
+     */
+    protected ResultData failed(String msg,Object data){
+        ResultData resultData = new ResultData();
+        resultData.setCode(StatusEnum.SUCCESS.getCode());
+        resultData.setMsg(msg);
+        resultData.setData(data);
+        return resultData;
+    }
+
+    /**
+     * 操作成功，返回系统消息，自定义返回值
+     * @param data
+     * @return
+     */
+    protected ResultData failed(Object data){
+        ResultData resultData = new ResultData();
+        resultData.setCode(StatusEnum.SUCCESS.getCode());
+        resultData.setMsg(StatusEnum.SUCCESS.getMsg());
+        resultData.setData(data);
+        return resultData;
+    }
 
 }
