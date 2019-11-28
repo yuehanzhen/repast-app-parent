@@ -24,7 +24,13 @@ public class PayTimeoutCancelOrderProcessor implements Runnable {
         Order order = new Order();
         order.setId(orderid);
         try {
-            orderService.alterOrderStatus(order.getOrderSn());
+            Order byId = orderService.get(orderid);
+            Boolean aBoolean = orderService.alterOrderStatus(byId.getOrderSn());
+            if(aBoolean==true){
+                System.out.println("关闭订单");
+            }else {
+                System.out.println("关闭订单失败");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
