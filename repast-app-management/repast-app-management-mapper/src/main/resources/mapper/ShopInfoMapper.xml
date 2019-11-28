@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.ShopInfoMapper">
+    <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.ShopInfo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="owner_id" property="ownerId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="borough" property="borough" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="lng" property="lng" jdbcType="VARCHAR"/>
+        <result column="lat" property="lat" jdbcType="VARCHAR"/>
+        <result column="closed" property="closed" jdbcType="TINYINT"/>
+        <result column="open_time" property="openTime" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="images" property="images" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="auth_start_time" property="authStartTime" jdbcType="TIMESTAMP"/>
+        <result column="auth_long" property="authLong" jdbcType="INTEGER"/>
+        <result column="template_id" property="templateId" jdbcType="INTEGER"/>
+        <result column="business_license" property="businessLicense" jdbcType="VARCHAR"/>
+        <result column="food_license" property="foodLicense" jdbcType="VARCHAR"/>
+        <result column="sanitation_license" property="sanitationLicense" jdbcType="VARCHAR"/>
+        <result column="assess" property="assess" jdbcType="VARCHAR"/>
+        <result column="contract_id" property="contractId" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <select id="getShopInfoByShopId" parameterType="long" resultType="com.aaa.lee.app.vo.ShopInfoVo">
+        select usi.id shopId, usi.name, usi.province, usi.city, usi.borough,
+    usi.lng, usi.lat, usi.phone, usf.id facilityId, usf.title, usf.description from ums_shop_information usi
+        inner join ums_shop_facility usf on usi.id = usf.shop_id
+    where usi.id = #{shopId}
+  </select>
+
+</mapper>

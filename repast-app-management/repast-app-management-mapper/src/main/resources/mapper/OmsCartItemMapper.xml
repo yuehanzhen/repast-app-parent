@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.OmsCartItemMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.OmsCartItem" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_sku_id" property="productSkuId" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="sp1" property="sp1" jdbcType="VARCHAR" />
+    <result column="sp2" property="sp2" jdbcType="VARCHAR" />
+    <result column="sp3" property="sp3" jdbcType="VARCHAR" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_sub_title" property="productSubTitle" jdbcType="VARCHAR" />
+    <result column="product_sku_code" property="productSkuCode" jdbcType="VARCHAR" />
+    <result column="member_nickname" property="memberNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="product_category_id" property="productCategoryId" jdbcType="BIGINT" />
+    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+    <result column="product_sn" property="productSn" jdbcType="VARCHAR" />
+    <result column="product_attr" property="productAttr" jdbcType="VARCHAR" />
+  </resultMap>
+  <update id="updataDeleteStatus" parameterType="com.aaa.lee.app.domain.OmsCartItem">
+    update oms_cart_item set delete_status = 1 where member_id = #{memberId} and shop_id = #{shopId}
+  </update>
+  <select id="getOmsCartltem" parameterType="com.aaa.lee.app.domain.OmsCartItem" resultType="com.aaa.lee.app.domain.SubmitOrderVO">
+    select
+oci.id oid,oci.product_id productId,oci.member_id memberId,oci.shop_id shopId,oci.price price,oci.quantity ,oci.product_pic productPic,oci.product_name productName,oci.create_date createDate,oci.modify_date modifyDate,oci.delete_status deleteStatus,
+um.phone phone,um.nickname memberNickname,um.member_level_id memberLevelId,um.username memberUsername
+from
+oms_cart_item oci,ums_member um
+where  oci.member_id = #{memberId} and oci.shop_id = #{shopId} and um.id = oci.member_id and oci.delete_status = 0
+  </select>
+</mapper>

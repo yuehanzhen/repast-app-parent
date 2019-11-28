@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.ProductMapper">
+    <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.Product">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="shop_id" property="shopId" jdbcType="BIGINT"/>
+        <result column="brand_id" property="brandId" jdbcType="BIGINT"/>
+        <result column="product_category_id" property="productCategoryId" jdbcType="BIGINT"/>
+        <result column="product_attribute_category_id" property="productAttributeCategoryId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="pic" property="pic" jdbcType="VARCHAR"/>
+        <result column="product_sn" property="productSn" jdbcType="VARCHAR"/>
+        <result column="delete_status" property="deleteStatus" jdbcType="INTEGER"/>
+        <result column="publish_status" property="publishStatus" jdbcType="INTEGER"/>
+        <result column="new_status" property="newStatus" jdbcType="INTEGER"/>
+        <result column="recommand_status" property="recommandStatus" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="sale" property="sale" jdbcType="INTEGER"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="promotion_price" property="promotionPrice" jdbcType="DECIMAL"/>
+        <result column="gift_point" property="giftPoint" jdbcType="INTEGER"/>
+        <result column="sub_title" property="subTitle" jdbcType="VARCHAR"/>
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL"/>
+        <result column="stock" property="stock" jdbcType="INTEGER"/>
+        <result column="low_stock" property="lowStock" jdbcType="INTEGER"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
+        <result column="weight" property="weight" jdbcType="DECIMAL"/>
+        <result column="service_ids" property="serviceIds" jdbcType="VARCHAR"/>
+        <result column="keywords" property="keywords" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="album_id" property="albumId" jdbcType="BIGINT"/>
+        <result column="detail_title" property="detailTitle" jdbcType="VARCHAR"/>
+        <result column="promotion_start_time" property="promotionStartTime" jdbcType="TIMESTAMP"/>
+        <result column="promotion_end_time" property="promotionEndTime" jdbcType="TIMESTAMP"/>
+        <result column="promotion_per_limit" property="promotionPerLimit" jdbcType="INTEGER"/>
+        <result column="promotion_type" property="promotionType" jdbcType="INTEGER"/>
+        <result column="brand_name" property="brandName" jdbcType="VARCHAR"/>
+        <result column="product_category_name" property="productCategoryName" jdbcType="VARCHAR"/>
+        <result column="currency" property="currency" jdbcType="TINYINT"/>
+        <result column="description" property="description" jdbcType="LONGVARCHAR"/>
+        <result column="detail_desc" property="detailDesc" jdbcType="LONGVARCHAR"/>
+        <result column="detail_html" property="detailHtml" jdbcType="LONGVARCHAR"/>
+        <result column="detail_mobile_html" property="detailMobileHtml" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <select id="getProductByShopId" parameterType="long" resultMap="BaseResultMap">
+    select pp.* from pms_product pp
+     inner join pms_sku_stock pss on pp.id = pss.product_id
+    where pp.delete_status = 0 and pp.publish_status = 1 and pss.stock > 0 and pp.shop_id = #{shopId}
+  </select>
+</mapper>
