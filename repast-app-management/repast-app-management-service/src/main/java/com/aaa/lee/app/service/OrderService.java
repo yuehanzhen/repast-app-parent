@@ -2,16 +2,14 @@ package com.aaa.lee.app.service;
 
 import com.aaa.lee.app.base.BaseService;
 import com.aaa.lee.app.domain.*;
-import com.aaa.lee.app.mapper.OrderItemMapper;
-import com.aaa.lee.app.mapper.OrderMapper;
-import com.aaa.lee.app.mapper.OrderSettingMapper;
-import com.aaa.lee.app.mapper.ProductMapper;
+import com.aaa.lee.app.mapper.*;
 import com.aaa.lee.app.utils.*;
 import com.aaa.lee.app.utils.delay.DelayCancelOrderTask;
 import com.aaa.lee.app.utils.delay.DelayCancelOrderTaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import tk.mybatis.mapper.common.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,10 +38,13 @@ public class OrderService extends BaseService<Order> {
     private ProductMapper productMapper;
     @Autowired
     private OrderSettingMapper orderSettingMapper;
+    @Autowired
+    private OrderReturnApplyMapper orderReturnApplyMapper;
     @Override
     public Mapper<Order> getMapper() {
         return orderMapper;
     }
+
 
 
     /**
@@ -370,7 +371,45 @@ public class OrderService extends BaseService<Order> {
     }
 
 
+    /**
+     * 通过订单id查询订单信息
+     * @param orderId
+     * @return
+     */
+    public List<OrderReturnApply> getOrderByOrderId(Long orderId){
+        List<OrderReturnApply> orderReturnApplies = orderReturnApplyMapper.selectOrderByOrderSId(orderId);
+        if (orderReturnApplies.size()>0){
+            System.out.println(orderReturnApplies);
+            return orderReturnApplies;
+        }
+        return null;
+    }
 
+    /**
+     * 添加外卖退货原因
+     * @return
+     */
+    public Integer insertReason(OrderReturnApply orderReturnApply) {
+        int i = orderReturnApplyMapper.insert(orderReturnApply);
+        System.out.println(i);
+        if (i > 0) {
+            return i;
+        }
+        return 0;
+    }
+
+    /**
+     * 通过订单id查询订单状态
+     * @param orderId
+     * @return
+     */
+    public OrderReturnApply getStatusByOrderId(Long orderId){
+        OrderReturnApply order = orderReturnApplyMapper.getStatusByOrderId(orderId);
+        if (null != order){
+            return order;
+        }
+        return null;
+    }
 
 
 }

@@ -4,6 +4,8 @@ import com.aaa.lee.app.base.BaseController;
 import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.Address;
 import com.aaa.lee.app.domain.Order;
+import com.aaa.lee.app.domain.OrderItem;
+import com.aaa.lee.app.domain.OrderReturnApply;
 import com.aaa.lee.app.service.IRepastService;
 import com.google.zxing.WriterException;
 import io.swagger.annotations.Api;
@@ -192,7 +194,54 @@ public class OrderController extends BaseController {
 //        return null;
 //    }
 
+    /**
+     * 通过订单编号查询订单信息
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/getOrder")
+    @ApiOperation(value = "退款",notes = "查询订单信息")
+    public ResultData getOrderByOrderId(Long orderId) {
+        List<OrderItem> orderItemList = repastService.getOrderByOrderId(orderId);
+        if (orderItemList.size() > 0) {
+            return success(orderItemList);
+        } else {
+            return failed();
+        }
+
+    }
+
+    /**
+     * 添加退款原因
+     * @param orderReturnApply
+     * @return
+     */
+    @PostMapping("/insertReason")
+    @ApiOperation(value = "退款",notes = "添加退款原因")
+    public ResultData insertReason(OrderReturnApply orderReturnApply){
+        Integer i = repastService.insertReason(orderReturnApply);
+        if (i>0){
+            return success();
+        }else {
+            return failed();
+        }
+
+    }
 
 
+    /**
+     * 通过订单id查询订单状态
+     * @return
+     */
+    @GetMapping("/getStatus")
+    @ApiOperation(value = "退款",notes = "查询退款状态 ")
+    public ResultData getStatusByOrderId(Long orderId){
+        OrderReturnApply statusByorderId = repastService.getStatusByOrderId(orderId);
+        if (null != statusByorderId){
+            return success(statusByorderId);
+        }else {
+            return failed();
+        }
+    }
 
 }

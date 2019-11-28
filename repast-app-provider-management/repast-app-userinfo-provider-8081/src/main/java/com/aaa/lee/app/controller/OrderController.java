@@ -3,6 +3,7 @@ package com.aaa.lee.app.controller;
 import com.aaa.lee.app.base.BaseController;
 import com.aaa.lee.app.domain.Order;
 import com.aaa.lee.app.domain.OrderItem;
+import com.aaa.lee.app.domain.OrderReturnApply;
 import com.aaa.lee.app.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class OrderController extends BaseController {
     private ProductService productService;
     @Autowired
     private OrderItemService orderItemService;
+
 
     /**
      * 获取订单信息
@@ -158,7 +160,36 @@ public class OrderController extends BaseController {
         }
     }
 
+    /**
+     * 通过订单编号查询订单信息
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/getOrder")
+    public List<OrderReturnApply> getOrderByOrderId(@RequestParam("orderId") Long orderId){
+        return orderService.getOrderByOrderId(orderId);
+    }
 
+    /**
+     * 添加外卖退款原因
+     * @param orderReturnApply
+     * @return
+     */
+    @PostMapping("/insertReason")
+    public Integer insertReason(@RequestBody OrderReturnApply orderReturnApply){
+        return orderService.insertReason(orderReturnApply);
+
+    }
+
+    /**
+     * 通过订单id查询订单状态
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/getStatus")
+    public OrderReturnApply getStatusByOrderId(@RequestParam("orderId") Long orderId){
+        return orderService.getStatusByOrderId(orderId);
+    }
 
 
 

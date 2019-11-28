@@ -179,4 +179,32 @@ public interface IRepastService {
      */
     @PostMapping("/wxNotify")
     void wxNotify() throws Exception ;
+
+
+    /**
+     * 通过订单id查询订单信息
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/getOrder")
+    List<OrderItem> getOrderByOrderId(@RequestParam("orderId") Long orderId);
+
+    /**
+     * 增加退款原因
+     * @param orderReturnApply
+     * @return
+     */
+    @PostMapping("/insertReason")
+    Integer insertReason(@RequestBody OrderReturnApply orderReturnApply);
+
+
+    /**
+     * 通过订单id查询订单状态
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/getStatus")
+    OrderReturnApply getStatusByOrderId(@RequestParam("orderId") Long orderId);
+
+
 }

@@ -176,6 +176,37 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             public void wxNotify() throws Exception {
 
             }
+
+            /**
+             * 获取订单
+             * @param orderId
+             * @return
+             */
+            @Override
+            public List<OrderItem> getOrderByOrderId(Long orderId) {
+
+                return null;
+            }
+
+            /**
+             * 添加退货原因
+             * @param orderReturnApply
+             * @return
+             */
+            @Override
+            public Integer insertReason(OrderReturnApply orderReturnApply) {
+                return null;
+            }
+
+            /**
+             * 获取订单状态
+             * @param orderId
+             * @return
+             */
+            @Override
+            public OrderReturnApply getStatusByOrderId(Long orderId) {
+                return null;
+            }
         };
         return repastService;
     }

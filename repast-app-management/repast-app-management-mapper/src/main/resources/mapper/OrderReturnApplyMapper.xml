@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.OrderReturnApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.OrderReturnApply" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="company_address_id" property="companyAddressId" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="member_username" property="memberUsername" jdbcType="VARCHAR" />
+    <result column="return_amount" property="returnAmount" jdbcType="DECIMAL" />
+    <result column="return_name" property="returnName" jdbcType="VARCHAR" />
+    <result column="return_phone" property="returnPhone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="handle_time" property="handleTime" jdbcType="TIMESTAMP" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+    <result column="product_attr" property="productAttr" jdbcType="VARCHAR" />
+    <result column="product_count" property="productCount" jdbcType="INTEGER" />
+    <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+    <result column="product_real_price" property="productRealPrice" jdbcType="DECIMAL" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="proof_pics" property="proofPics" jdbcType="VARCHAR" />
+    <result column="handle_note" property="handleNote" jdbcType="VARCHAR" />
+    <result column="handle_man" property="handleMan" jdbcType="VARCHAR" />
+    <result column="receive_man" property="receiveMan" jdbcType="VARCHAR" />
+    <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
+    <result column="receive_note" property="receiveNote" jdbcType="VARCHAR" />
+    <result column="original_file_name" property="originalFileName" jdbcType="VARCHAR" />
+    <result column="new_file_name" property="newFileName" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+
+  <!--  <update id="updatePicAndFileNameAndOldFileNameById">-->
+<!--    update oms_order_return_apply set proof_pics = #{proofPics}, new_file_name = #{newFileName}, original_file_name = #{originalFileName}-->
+<!--    where id = #{id}-->
+<!--  </update>-->
+    <select id="selectOrderByOrderSId" resultMap="BaseResultMap">
+    select * from oms_order_return_apply where order_id = #{orderId}
+    </select>
+    <select id="findOne" resultMap="BaseResultMap">
+      select * from oms_order_return_apply where order_id = #{orderId}
+    </select>
+  <select id="getStatusByOrderId" resultType="com.aaa.lee.app.domain.OrderReturnApply" resultMap="BaseResultMap">
+    select status from oms_order_return_apply where order_id = #{orderId}
+  </select>
+
+
+</mapper>
