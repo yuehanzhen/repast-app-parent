@@ -206,5 +206,11 @@ public interface IRepastService {
     @GetMapping("/getStatus")
     OrderReturnApply getStatusByOrderId(@RequestParam("orderId") Long orderId);
 
+    /**
+     * 获取默认收货地址
+     * @return
+     */
+    @GetMapping("/getDefaultAddress")
+    MemberDefaultAddress getDefaultAddress();
 
 }

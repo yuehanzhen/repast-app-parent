@@ -207,6 +207,12 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             public OrderReturnApply getStatusByOrderId(Long orderId) {
                 return null;
             }
+
+            @Override
+            public MemberDefaultAddress getDefaultAddress() {
+                System.out.println("获取默认收货地址");
+                return null;
+            }
         };
         return repastService;
     }
