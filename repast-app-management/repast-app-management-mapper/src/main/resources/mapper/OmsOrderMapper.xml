@@ -72,4 +72,13 @@
       #{payAmount}
     )
   </insert>
+  <update id="updateStatusFailed" parameterType="long" >
+      update oms_order set status = 5 where member_id=#{member_id}
+    </update>
+  <update id="updateStatusWait">
+        update oms_order set status = 0 where member_id=#{member_id}
+    </update>
+  <update id="updateStatusFinish">
+        update oms_order set status = 1 where member_id=#{member_id}
+    </update>
 </mapper>

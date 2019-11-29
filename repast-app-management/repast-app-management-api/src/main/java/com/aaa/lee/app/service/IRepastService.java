@@ -2,6 +2,7 @@ package com.aaa.lee.app.service;
 
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.fallback.RepastFallBackFactory;
+import com.aaa.lee.app.vo.OmsOrderVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
 import com.google.zxing.WriterException;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -212,5 +213,12 @@ public interface IRepastService {
      */
     @GetMapping("/getDefaultAddress")
     MemberDefaultAddress getDefaultAddress();
+    /**
+     * 购物车提交的商品信息，先加入订单，如果未支付，就修改状态吗为无效订单
+     * @param orderVo
+     * @return
+     */
+    @PostMapping("/addOrder")
+    Boolean addOrder(@RequestBody List<OmsOrderVo> orderVo);
 
 }

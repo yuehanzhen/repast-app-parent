@@ -2,6 +2,7 @@ package com.aaa.lee.app.fallback;
 
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.service.IRepastService;
+import com.aaa.lee.app.vo.OmsOrderVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
 import com.google.zxing.WriterException;
 import feign.hystrix.FallbackFactory;
@@ -210,7 +211,13 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
 
             @Override
             public MemberDefaultAddress getDefaultAddress() {
-                System.out.println("获取默认收货地址");
+                System.out.println("测试获取默认收货地址");
+                return null;
+            }
+
+            @Override
+            public Boolean addOrder(List<OmsOrderVo> orderVo) {
+                System.out.println("测试加入订单");
                 return null;
             }
         };

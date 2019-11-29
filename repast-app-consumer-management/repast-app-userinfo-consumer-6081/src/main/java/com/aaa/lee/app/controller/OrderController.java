@@ -7,6 +7,7 @@ import com.aaa.lee.app.domain.Order;
 import com.aaa.lee.app.domain.OrderItem;
 import com.aaa.lee.app.domain.OrderReturnApply;
 import com.aaa.lee.app.service.IRepastService;
+import com.aaa.lee.app.vo.OmsOrderVo;
 import com.google.zxing.WriterException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -243,5 +244,21 @@ public class OrderController extends BaseController {
             return failed();
         }
     }
+    /**
+     * 加入订单
+     */
+    @Autowired
+    private IRepastService iRepastService;
+    @PostMapping("/addOrder")
+    @ApiOperation(value = "添加订单", notes = "加入购物车的数据到订单详情和订单")
+    public ResultData addOrder(@RequestBody List<OmsOrderVo> orderVo){
+        Boolean aBoolean = iRepastService.addOrder(orderVo);
+        if(aBoolean){
+            return success("添加订单成功");
+        }else {
+            return failed("添加订单失败");
+        }
+    }
+
 
 }

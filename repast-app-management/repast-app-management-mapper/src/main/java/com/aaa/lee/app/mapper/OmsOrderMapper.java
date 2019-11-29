@@ -5,4 +5,7 @@ import tk.mybatis.mapper.common.Mapper;
 
 public interface OmsOrderMapper extends Mapper<OmsOrder> {
     int setOmsOrder(OmsOrder omsOrder);
+    Integer updateStatusFailed(Long memberId);
+    Integer updateStatusWait(Long memberId);
+    Integer updateStatusFinish(Long memberId);
 }

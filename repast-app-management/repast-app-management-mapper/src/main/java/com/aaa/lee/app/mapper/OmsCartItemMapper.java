@@ -10,5 +10,6 @@ public interface OmsCartItemMapper extends Mapper<OmsCartItem> {
     List<SubmitOrderVO> getOmsCartltem(OmsCartItem omsCartItem);
 
     void updataDeleteStatus(OmsCartItem omsCartItem);
+    Integer updateCartStatus(Long memberId);
 
 }

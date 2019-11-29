@@ -5,6 +5,7 @@ import com.aaa.lee.app.domain.Order;
 import com.aaa.lee.app.domain.OrderItem;
 import com.aaa.lee.app.domain.OrderReturnApply;
 import com.aaa.lee.app.service.*;
+import com.aaa.lee.app.vo.OmsOrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -189,6 +190,16 @@ public class OrderController extends BaseController {
     @GetMapping("/getStatus")
     public OrderReturnApply getStatusByOrderId(@RequestParam("orderId") Long orderId){
         return orderService.getStatusByOrderId(orderId);
+    }
+    /**
+     * 加入订单
+     * @param omsOrder
+     * @return
+     */
+    @PostMapping("/addOrder")
+    public Boolean addOrder(@RequestBody List<OmsOrderVo> omsOrder){
+        Boolean aBoolean = orderService.addOrder(omsOrder,redisService);
+        return aBoolean;
     }
 
 
