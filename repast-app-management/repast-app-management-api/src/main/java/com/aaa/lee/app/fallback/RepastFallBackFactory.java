@@ -220,6 +220,12 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
                 System.out.println("测试加入订单");
                 return null;
             }
+
+            @Override
+            public Boolean updateOrder(Long statuID) {
+                System.out.println("测试修改订单状态码");
+                return null;
+            }
         };
         return repastService;
     }

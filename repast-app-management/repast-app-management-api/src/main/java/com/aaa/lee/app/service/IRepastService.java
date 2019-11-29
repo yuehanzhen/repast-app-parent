@@ -220,5 +220,13 @@ public interface IRepastService {
      */
     @PostMapping("/addOrder")
     Boolean addOrder(@RequestBody List<OmsOrderVo> orderVo);
+    /**
+     * 修改订单状态
+     * @param statuID
+     * @return
+     */
+    @PostMapping("/deleteOrder")
+    Boolean updateOrder(@RequestParam("statuID") Long statuID);
+
 
 }

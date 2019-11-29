@@ -259,6 +259,22 @@ public class OrderController extends BaseController {
             return failed("添加订单失败");
         }
     }
+    /**
+     * 根据是否付款成功的状态码修改订单状态，如果未付款直接修改状态为无效订单
+     * 如果statuid为1 改为无效
+     * @param statuID
+     * @return
+     */
+    @PostMapping("deleteOrder")
+    @ApiOperation(value = "设置无效订单", notes = "未付款的话设置无效订单")
+    public ResultData updateOrder(@RequestParam("statuID") Long statuID){
+        Boolean aBoolean = iRepastService.updateOrder(statuID);
+        if(aBoolean){
+            return success("修改状态码成功");
+        }else {
+            return failed("修改状态码失败");
+        }
+    }
 
 
 }

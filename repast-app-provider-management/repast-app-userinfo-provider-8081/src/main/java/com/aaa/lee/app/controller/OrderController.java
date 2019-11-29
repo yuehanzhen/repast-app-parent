@@ -201,7 +201,15 @@ public class OrderController extends BaseController {
         Boolean aBoolean = orderService.addOrder(omsOrder,redisService);
         return aBoolean;
     }
-
-
+    /**
+     * 修改订单状态
+     * @param statuID
+     * @return
+     */
+    @PostMapping("deleteOrder")
+    public Boolean updateOrder(@RequestParam Long statuID){
+        Boolean aBoolean = orderService.deleteOrder(statuID, redisService);
+        return aBoolean;
+    }
 
 }
