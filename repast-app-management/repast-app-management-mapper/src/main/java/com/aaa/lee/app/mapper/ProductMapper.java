@@ -1,6 +1,7 @@
 package com.aaa.lee.app.mapper;
 
 import com.aaa.lee.app.domain.Product;
+import com.aaa.lee.app.vo.ProductVo;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -24,4 +25,5 @@ public interface ProductMapper extends Mapper<Product> {
      * @return
      */
     Integer updateProCountByProId(@Param("id") Long id, @Param("stock")Integer stock);
+    ProductVo getOrderInfoByProductId(Long productId);
 }

@@ -3,6 +3,7 @@ package com.aaa.lee.app.service;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.fallback.RepastFallBackFactory;
 import com.aaa.lee.app.vo.OmsOrderVo;
+import com.aaa.lee.app.vo.OrderInfoVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
 import com.google.zxing.WriterException;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -227,6 +228,13 @@ public interface IRepastService {
      */
     @PostMapping("/deleteOrder")
     Boolean updateOrder(@RequestParam("statuID") Long statuID);
+    /**
+     * 获取订单页面商品信息
+     * @param memberId
+     * @return
+     */
+    @PostMapping("/getOrderInfo")
+    List<OrderInfoVo> getOrderInfo();
 
 
 }

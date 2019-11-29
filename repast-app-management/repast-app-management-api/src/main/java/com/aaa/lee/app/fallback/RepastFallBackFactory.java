@@ -3,6 +3,7 @@ package com.aaa.lee.app.fallback;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.service.IRepastService;
 import com.aaa.lee.app.vo.OmsOrderVo;
+import com.aaa.lee.app.vo.OrderInfoVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
 import com.google.zxing.WriterException;
 import feign.hystrix.FallbackFactory;
@@ -224,6 +225,12 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             @Override
             public Boolean updateOrder(Long statuID) {
                 System.out.println("测试修改订单状态码");
+                return null;
+            }
+
+            @Override
+            public List<OrderInfoVo> getOrderInfo() {
+                System.out.println("测试从购物车中得到商品信息");
                 return null;
             }
         };

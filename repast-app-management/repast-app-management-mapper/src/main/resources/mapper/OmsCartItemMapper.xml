@@ -39,7 +39,24 @@ from
 oms_cart_item oci,ums_member um
 where  oci.member_id = #{memberId} and oci.shop_id = #{shopId} and um.id = oci.member_id and oci.delete_status = 0
   </select>
+  <resultMap id="Map" type="com.aaa.lee.app.vo.OrderInfoVo" >
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="member_nickname" property="memberNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+  </resultMap>
   <update id="updateCartStatus" parameterType="long">
     update oms_cart_item set delete_status = 2 where member_id=#{memberId}
   </update>
+
+  <select id="getOrderInfo" resultMap="Map" parameterType="long">
+    select product_name,shop_id,quantity,price,product_pic,member_nickname,create_date,delete_status from oms_cart_item
+    where member_id=#{member_id}
+  </select>
+  <select id="getShopName" resultType="java.lang.String" parameterType="long">
+    SELECT name FROM ums_shop_information where id=#{shopId}
+  </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.aaa.lee.app.service;
 import com.aaa.lee.app.base.BaseService;
 import com.aaa.lee.app.domain.Product;
 import com.aaa.lee.app.mapper.ProductMapper;
+import com.aaa.lee.app.vo.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.common.Mapper;
@@ -41,5 +42,9 @@ public class ProductService extends BaseService<Product> {
             return productList;
         }
         return null;
+    }
+    public ProductVo getOrderInfoByProductId(Long productId){
+        ProductVo orderInfoByProductId = productMapper.getOrderInfoByProductId(productId);
+        return orderInfoByProductId;
     }
 }

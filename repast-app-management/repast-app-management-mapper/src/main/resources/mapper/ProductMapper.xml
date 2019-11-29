@@ -56,4 +56,15 @@
     <update id="updateProCountByProId" parameterType="com.aaa.lee.app.domain.Product">
     update pms_product set pms_product.stock =#{stock}  where pms_product.id=#{id}
   </update>
+
+    <resultMap id="Map" type="com.aaa.lee.app.vo.ProductVo">
+        <result column="productname" property="productName" jdbcType="VARCHAR"/>
+        <result column="pic" property="pic" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="shopname" property="shopName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getOrderInfoByProductId" resultMap="Map" parameterType="long">
+        select pp.name productname,pp.pic,pp.price,usi.name shopname from pms_product pp inner join ums_shop_information usi
+        where pp.shop_id = usi.id and pp.id=#{productId}
+    </select>
 </mapper>
