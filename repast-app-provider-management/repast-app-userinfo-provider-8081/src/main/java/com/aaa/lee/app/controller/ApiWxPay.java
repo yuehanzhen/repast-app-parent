@@ -1,6 +1,9 @@
 package com.aaa.lee.app.controller;
 
 
+import com.aaa.lee.app.base.BaseController;
+import com.aaa.lee.app.base.ResultData;
+import com.aaa.lee.app.service.MemberService;
 import com.aaa.lee.app.service.OrderItemService;
 import com.aaa.lee.app.service.OrderService;
 import com.aaa.lee.app.service.ProductService;
@@ -22,7 +25,7 @@ import java.util.Map;
  * 微信支付接口
  */
 @RestController
-    public class ApiWxPay {
+    public class ApiWxPay extends BaseController {
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -33,44 +36,22 @@ import java.util.Map;
     private OrderService orderService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private MemberService memberService;
 
-    /**
-     * 微信支付
-     * @param orderId
-     * @param openid
-     * @param amount
-     * @return
-     */
     @GetMapping("/pay")
     public @ResponseBody
-    Map<String, Object> pay(@RequestParam("ordersn") String ordersn, @RequestParam(name = "openid") String openid, @RequestParam(name = "amount") Float amount){
-
-        Map<String, Object> pay = orderService.pay(openid, ordersn, amount, request);
-        System.out.println(pay);
-        if(pay!=null){
-            return pay;
+    ResultData pay(@RequestParam("ordersn")String ordersn, @RequestParam(name = "openid") String openid, @RequestParam(name = "amount") Float amount, @RequestParam(name = "token") String token){
+        if(memberService.getMemberByToken(token)){
+            Map<String,Object> pay = orderService.pay(openid, ordersn, amount, request);
+            if(pay!=null){
+                return success("支付成功",pay);
+            }
+            return failed("支付失败");
+        }else {
+            return failed("用户信息已失效");
         }
-        return null;
-
     }
-    /**
-     * 微信支付回调方法
-     * @param request
-     * @param response
-     * @throws Exception
-     */
-//    @RequestMapping("/notice")
-//    public void notice(HttpServletRequest request) throws Exception {
-//
-//        Map payResult = PayUtil.wxNotify(request, response);
-////        if(payResult.get("notify_result")!=null&"SUCCESS".equals(payResult.get("notify_result"))){
-////            String orderId = (String)payResult.get("out_trade_no");
-////            Order order = orderService.selectOrderByOrderId(orderId);
-////            order.setStatusId(STATUS_ORDER_PAID);
-////            orderService.updateOrder(order);
-////        }
-//
-//    }
 
     /**
      * 支付回调接口，微信支付成功后会自动调用
@@ -100,14 +81,6 @@ import java.util.Map;
                 //说明用户付款成功
                 //注意要判断微信支付重复回调，支付成功后微信会重复的进行回调
                 String orderSn = (String) map.get("out_trade_no");
-//                Order info=orderService.getOrderInfoByOrderOrderId(orderSn);
-//                List<OrderItem> orderItemList=orderItemService.getOrderItemList(orderSn);
-//                for(OrderItem orderItem:orderItemList){
-//                    Integer quantity=orderItem.getProductQuantity();
-//                    Product product=productService.getById(orderItem.getProductId());
-//                    Boolean isfalse=productService.updateStockByProductId(orderItem.getProductId(),product.getStock()-quantity);
-//                }
-//                orderService.alterOrderStatus(info.getId());
                 orderService.alterSkuAndStatus(orderSn);
 
                 Boolean aBoolean = orderService.alterSkuAndStatus(orderSn);

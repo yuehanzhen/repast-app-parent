@@ -34,14 +34,9 @@ public class WXPayController extends BaseController {
     @GetMapping("/pay")
     @ApiOperation(value = "支付接口", notes = "支付接口")
     public @ResponseBody
-    ResultData pay(String ordersn, String openid, Float amount){
-        Map<String, Object> result= repastService.pay(ordersn,openid,amount);
-        System.out.println(result.get("msg")+"+++++"+result.get("data"));
-        if(result!=null){
-            return success("支付成功",result);
-        }else {
-            return failed("支付失败");
-        }
+    ResultData pay(String ordersn, String openid, Float amount,String token){
+        return repastService.pay(ordersn,openid,amount,token);
+
     }
 
     /**

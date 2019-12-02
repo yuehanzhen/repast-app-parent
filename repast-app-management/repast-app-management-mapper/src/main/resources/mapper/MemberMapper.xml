@@ -30,4 +30,7 @@
     <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
     <result column="token" property="token" jdbcType="VARCHAR" />
   </resultMap>
+  <select id="getMemberByToken" parameterType="java.lang.String" resultType="com.aaa.lee.app.domain.Member">
+    select * from ums_member um where um.token=#{token}
+  </select>
 </mapper>
