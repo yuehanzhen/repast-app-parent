@@ -10,4 +10,6 @@ public interface MemberMapper extends Mapper<Member> {
      * @return
      */
     Member getMemberByToken(String token);
+    //通过token查询用户id,nickname,token
+    Member selectMemberId(String token);
 }

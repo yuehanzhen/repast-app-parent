@@ -33,4 +33,12 @@
   <select id="getMemberByToken" parameterType="java.lang.String" resultType="com.aaa.lee.app.domain.Member">
     select * from ums_member um where um.token=#{token}
   </select>
+  <select id="selectMemberId" parameterType="String" resultMap="BaseResultMap">
+    SELECT
+	 id,nickname,token
+    FROM
+	 ums_member
+    WHERE
+	 token = #{token}
+    </select>
 </mapper>

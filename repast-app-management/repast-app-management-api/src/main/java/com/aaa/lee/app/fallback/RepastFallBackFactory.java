@@ -211,6 +211,24 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
                 System.out.println("测试从购物车中得到商品信息");
                 return null;
             }
+
+            @Override
+            public List<OrderCart> orderCart(Long shopId, String token) {
+                System.out.println("测试查询购物车操作");
+                return null;
+            }
+
+            @Override
+            public Boolean addCart(Map<String, Object> data, String token) {
+                System.out.println("测试添加购物车操作");
+                return null;
+            }
+
+            @Override
+            public Boolean clearCart(Long shopId, String token) {
+                System.out.println("测试清空购物车操作");
+                return null;
+            }
         };
         return repastService;
     }

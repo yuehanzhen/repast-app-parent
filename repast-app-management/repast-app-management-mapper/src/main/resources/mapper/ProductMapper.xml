@@ -67,4 +67,26 @@
         select pp.name productname,pp.pic,pp.price,usi.name shopname from pms_product pp inner join ums_shop_information usi
         where pp.shop_id = usi.id and pp.id=#{productId}
     </select>
+    <!--订单购物车-->
+    <update id="updateStockById" parameterType="com.aaa.lee.app.domain.Product" >
+    UPDATE pms_product
+    SET stock = #{stock}
+    WHERE
+	    id = #{id}
+    </update>
+    <select id="selectProductById" parameterType="Long" resultMap="BaseResultMap">
+      SELECT
+	    price,
+	    pic,
+	    `NAME`,
+	sub_title,
+	product_category_id,
+	brand_name,
+	product_sn,
+	publish_status
+FROM
+	pms_product
+WHERE
+	id = #{productId}
+    </select>
 </mapper>

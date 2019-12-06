@@ -26,4 +26,20 @@ public interface ProductMapper extends Mapper<Product> {
      */
     Integer updateProCountByProId(@Param("id") Long id, @Param("stock")Integer stock);
     ProductVo getOrderInfoByProductId(Long productId);
+
+/**
+ * @Author LiYuan
+ * @Description 
+ *        订单购物车
+ * @Date 2019/12/6 0006 10:45
+ * @Param [shopId] 
+ * @return java.util.List<com.aaa.lee.app.domain.Product>
+ * @Exception 
+ **/
+
+    Product selectProductById(Long productId);
+    //8分钟未开启，加入购物车修改商品表库存的数量
+    Integer updateStockById(Product product);
+    //8分钟后库存需要返回之前的值
+    
 }

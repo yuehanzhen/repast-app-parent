@@ -218,6 +218,19 @@ public interface IRepastService {
      */
     @PostMapping("/getOrderInfo")
     List<OrderInfoVo> getOrderInfo();
+    /**
+     * 订单购物车
+     */
+    /*查询购物车操作*/
+    @GetMapping("/order/selectCartOperation")
+    List<OrderCart> orderCart(@RequestParam("shopId") Long shopId,@RequestParam("token") String token);
+
+    /*把购车商品添加到数据库*/
+    @PostMapping("/order/addCartOperation")
+    Boolean addCart(@RequestBody Map<String, Object> data,@RequestParam("token") String token);
+    /*清空购物车*/
+    @GetMapping("/order/clearCart")
+    public  Boolean clearCart(@RequestParam("shopId") Long shopId,@RequestParam("token") String token);
 
 
 }

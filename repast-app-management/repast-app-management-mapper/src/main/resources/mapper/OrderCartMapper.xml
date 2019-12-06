@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.OrderCartMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.OrderCart" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_id" property="productId" jdbcType="BIGINT" />
+    <result column="product_sku_id" property="productSkuId" jdbcType="BIGINT" />
+    <result column="member_id" property="memberId" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="sp1" property="sp1" jdbcType="VARCHAR" />
+    <result column="sp2" property="sp2" jdbcType="VARCHAR" />
+    <result column="sp3" property="sp3" jdbcType="VARCHAR" />
+    <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_sub_title" property="productSubTitle" jdbcType="VARCHAR" />
+    <result column="product_sku_code" property="productSkuCode" jdbcType="VARCHAR" />
+    <result column="member_nickname" property="memberNickname" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="product_category_id" property="productCategoryId" jdbcType="BIGINT" />
+    <result column="product_brand" property="productBrand" jdbcType="VARCHAR" />
+    <result column="product_sn" property="productSn" jdbcType="VARCHAR" />
+    <result column="product_attr" property="productAttr" jdbcType="VARCHAR" />
+    <result column="product_service_status" property="productServiceStatus" jdbcType="INTEGER"></result>
+  </resultMap>
+  <insert id="addCartPro" parameterType="com.aaa.lee.app.domain.OrderCart">
+    insert into oms_cart_item(product_id,product_sku_id,member_id,shop_id,quantity,price,sp1,sp2,sp3,product_pic,product_name,product_sub_title,product_sku_code,member_nickname,create_date,delete_status,product_category_id,product_brand,product_sn,product_attr,product_service_status)
+    values (#{productId},#{productSkuId},#{memberId},#{shopId},#{quantity},#{price},#{sp1},#{sp2},#{sp3},#{productPic},#{productName},#{productSubTitle},#{productSkuCode},#{memberNickname},#{createDate},#{deleteStatus},#{productCategoryId},#{productBrand},#{productSn},#{productAttr},#{productServiceStatus})
+  </insert>
+  <update id="upDateCart" parameterType="com.aaa.lee.app.domain.OrderCart">
+   UPDATE oms_cart_item
+   SET quantity = #{quantity},modify_date = #{modifyDate} where product_id = #{productId} AND member_id = #{memberId} AND delete_status = 0
+  </update>
+  <update id="clearCart" parameterType="com.aaa.lee.app.domain.OrderCart">
+   UPDATE oms_cart_item
+   SET delete_status = #{deleteStatus},modify_date = #{modifyDate} where shop_id = #{shopId} AND member_id = #{memberId}
+  </update>
+
+   <delete id="deleteCart" parameterType="com.aaa.lee.app.domain.OrderCart">
+    delete from oms_cart_item where product_id = #{productId} AND member_id = #{memberId}
+  </delete>
+
+
+  <select id="selectCart"  resultMap="BaseResultMap" parameterType="com.aaa.lee.app.domain.OrderCart">
+ SELECT DISTINCT
+	cart.*
+FROM
+	oms_cart_item cart
+	INNER JOIN pms_product pro
+WHERE
+pro.id = cart.product_id
+	AND cart.delete_status = 0
+	AND pro.delete_status = 0
+	AND pro.publish_status = 1
+	AND cart.shop_id = #{shopId}
+	AND cart.member_id = #{memberId}
+    </select>
+
+  <select id="selectMemberCart" parameterType="com.aaa.lee.app.domain.OrderCart" resultMap="BaseResultMap">
+SELECT
+	cart.*,
+	stock
+FROM
+	oms_cart_item cart
+	INNER JOIN pms_product pt
+WHERE
+	pt.id = cart.product_id
+	AND cart.delete_status = 0
+	AND pt.delete_status = 0
+	AND product_id = #{productId}
+	AND cart.member_id = #{memberId}
+  </select>
+</mapper>
