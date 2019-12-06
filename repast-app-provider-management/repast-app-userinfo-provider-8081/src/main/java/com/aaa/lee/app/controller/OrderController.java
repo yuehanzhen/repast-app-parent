@@ -1,6 +1,7 @@
 package com.aaa.lee.app.controller;
 
 import com.aaa.lee.app.base.BaseController;
+import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.Order;
 import com.aaa.lee.app.domain.OrderItem;
 import com.aaa.lee.app.domain.OrderReturnApply;
@@ -35,6 +36,8 @@ public class OrderController extends BaseController {
     private ProductService productService;
     @Autowired
     private OrderItemService orderItemService;
+    @Autowired
+    private MemberService memberService;
 
 
     /**
@@ -98,8 +101,16 @@ public class OrderController extends BaseController {
      * @return
      */
     @GetMapping("/cancalOrder")
-    public Boolean cancalOrder(@RequestParam("ordersn") String ordersn){
-        return orderService.cancalOrder(ordersn);
+    public ResultData cancalOrder(@RequestParam("ordersn") String ordersn,@RequestParam("token") String token){
+        Boolean tokenisexist = memberService.getMemberByToken(token);
+        if(tokenisexist){
+           Boolean result=orderService.cancalOrder(ordersn);
+           if(result){
+               return success("取消成功");
+           }
+           return failed("取消失败");
+        }
+        return failed("用户身份已过期");
     }
 
     /**
@@ -108,8 +119,16 @@ public class OrderController extends BaseController {
      * @return
      */
     @GetMapping("/affirmReceipt")
-    public Boolean affirmReceipt(@RequestParam("orderSn") String orderSn){
-        return orderService.affirmReceipt(orderSn);
+    public ResultData affirmReceipt(@RequestParam("orderSn") String orderSn,@RequestParam("token") String token){
+        Boolean tokenisexist = memberService.getMemberByToken(token);
+        if(tokenisexist){
+            Boolean result=orderService.affirmReceipt(orderSn);
+            if(result){
+                return success("收货成功");
+            }
+            return failed("收货失败");
+        }
+        return failed("用户身份已过期");
     }
 
     /**
@@ -119,46 +138,16 @@ public class OrderController extends BaseController {
      * @return
      */
     @GetMapping("/toRestoreOrder")
-    public Map<String, Object> toRestoreOrder(@RequestParam("ordersn") String ordersn, @RequestParam("openid") String openid){
-        Map<String, Object> jsonObject=orderService.toRestoreOrder(ordersn, openid, request);
-        if(jsonObject!=null){
-            return jsonObject;
+    public ResultData toRestoreOrder(@RequestParam("ordersn") String ordersn, @RequestParam("openid") String openid, @RequestParam("token") String token){
+        Boolean tokenisexist = memberService.getMemberByToken(token);
+        if(tokenisexist){
+            Map<String,Object> jsonObject=orderService.toRestoreOrder(ordersn, openid, request);
+            if(jsonObject!=null){
+                return success("支付成功",jsonObject);
+            }
+            return failed("支付失败");
         }
-        return null;
-    }
-
-    /**
-     * 测试
-     * @param ordersn
-     * @return
-     */
-    @GetMapping("/aaaa")
-    public Order get(String ordersn){
-        Order info = orderService.getOrderInfoByOrderOrderId(ordersn);
-        if(info!=null){
-            return info;
-        }
-        return null;
-    }
-    /**
-     * 测试通过订单编号获取订单中的商品
-     * @param ordersn
-     * @return
-     */
-    @GetMapping("/bbb")
-    public List<OrderItem> getaa(String ordersn){
-        return orderItemService.getOrderItemList(ordersn);
-    }
-
-    @GetMapping("/aaaaaa")
-    public Boolean getbb(String ordersn){
-        Boolean aBoolean = orderService.alterSkuAndStatus(ordersn);
-        if (aBoolean==true){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return failed("用户信息已过期");
     }
 
     /**

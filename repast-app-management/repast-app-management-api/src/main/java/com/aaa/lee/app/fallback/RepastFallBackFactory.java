@@ -1,5 +1,6 @@
 package com.aaa.lee.app.fallback;
 
+import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.service.IRepastService;
 import com.aaa.lee.app.vo.OmsOrderVo;
@@ -99,29 +100,6 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
                 return null;
             }
 
-            /**
-             * 二维码支付
-             * @param ordersn
-             * @param payamout
-             * @return
-             * @throws WriterException
-             * @throws IOException
-             */
-            @Override
-            public boolean generateCode(String ordersn, BigDecimal payamout) throws WriterException, IOException {
-                return false;
-            }
-
-            /**
-             * 微信jspi熔断
-             * @param openid
-             * @return
-             */
-            @Override
-            public Map<String, Object> wxPay(String openid) {
-                return null;
-            }
-
 
             /**
              * 取消订单
@@ -129,7 +107,7 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
              * @return
              */
             @Override
-            public Boolean cancalOrder(String ordersn) {
+            public ResultData cancalOrder(String ordersn,String token) {
                 System.out.println("取消顶单熔断");
                 return null;
             }
@@ -140,7 +118,7 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
              * @return
              */
             @Override
-            public Boolean affirmReceipt(String orderSn) {
+            public ResultData affirmReceipt(String orderSn,String token) {
                 System.out.println("测试确认收货熔断");
                 return null;
             }
@@ -153,7 +131,7 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
              * @return
              */
             @Override
-            public Map<String, Object> pay(String ordersn, String openid, Float amount) {
+            public ResultData pay(String ordersn, String openid, Float amount,String token) {
                 System.out.println("测试支付接口熔断");
                 return null;
             }
@@ -165,7 +143,7 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
              * @return
              */
             @Override
-            public Map<String, Object> toRestoreOrder(String ordersn, String openid) {
+            public ResultData toRestoreOrder(String ordersn, String openid,String token) {
                 System.out.println("测试中途退出入款，恢复付款熔断");
                 return null;
             }
@@ -231,6 +209,24 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             @Override
             public List<OrderInfoVo> getOrderInfo() {
                 System.out.println("测试从购物车中得到商品信息");
+                return null;
+            }
+
+            @Override
+            public List<OrderCart> orderCart(Long shopId, String token) {
+                System.out.println("测试查询购物车操作");
+                return null;
+            }
+
+            @Override
+            public Boolean addCart(Map<String, Object> data, String token) {
+                System.out.println("测试添加购物车操作");
+                return null;
+            }
+
+            @Override
+            public Boolean clearCart(Long shopId, String token) {
+                System.out.println("测试清空购物车操作");
                 return null;
             }
         };

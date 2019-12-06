@@ -28,82 +28,6 @@ import java.util.Map;
 public class OrderController extends BaseController {
     @Autowired
     private IRepastService repastService;
-    /**
-     * 查询会员的收货地址列表
-     * @return
-     */
-    @GetMapping("/getMemberAddressByMemberId")
-    @ApiOperation(value = "查询用户的收货地址列表", notes = "查询收货地址列表")
-    public ResultData getMemberAddressByMemberId(Long memberid){
-        List<Address> addressList = repastService.getMemberAddressByMemberId(memberid);
-        if(addressList.size()>0) {
-            return success("查询成功", addressList);
-        }else {
-            return failed("查询失败");
-        }
-    }
-
-    /**
-     * 通过主键id查询默认收货地址
-     * @return
-     */
-//    @GetMapping("/getAddressByPrimaryId")
-//    @ApiOperation(value = "查询用户的收货地址", notes = "查询收货地址")
-//    public ResultData getAddressByPrimaryId(){
-//        Address address = repastService.getAddressByPrimaryId();
-//        if(null!=address){
-//            return success("查询成功",address);
-//        }
-//        return failed("查询失败");
-//    }
-
-    /**
-     * 提交订单
-     * @return
-     */
-    @GetMapping("/submitOrder")
-    @ApiOperation(value = "提交订单", notes = "保存订单")
-    public ResultData submitOrder(){
-        Map<String, Object> b = repastService.submitOrder();
-        if(b!=null && "200".equals(b.get("code"))){
-            return success("提交订单成功");
-        }
-        return failed("提交订单失败");
-    }
-    /**
-     * 生成二维码
-     * @param ordersn
-     * @param payamout
-     * @throws WriterException
-     * @throws IOException
-     */
-//    @GetMapping("/api/wxpay")
-//    @ApiOperation(value = "支付二维码", notes = "支付二维码")
-//    public ResultData generateCode(String ordersn,BigDecimal payamout) throws IOException, WriterException {
-//        boolean b = repastService.generateCode(ordersn, payamout);
-//        if(b!=false){
-//            return success("二维码生成成功");
-//        }else{
-//            return failed("失败");
-//        }
-//    }
-
-    /**
-     * 统一下单接口
-     * @param openid
-     * @return
-     */
-//    @RequestMapping(value = "/wxPay", method = RequestMethod.GET)
-//    @ApiOperation(value = "微信支付接口", notes = "微信支付接口")
-//    public ResultData wxPay(String openid){
-//        Map<String, Object> map = repastService.wxPay(openid);
-//        if(map!=null){
-//            return success("请求成功",map);
-//
-//        }else {
-//            return failed();
-//        }
-//    }
 
     /**
      * 取消订单
@@ -112,13 +36,8 @@ public class OrderController extends BaseController {
      */
     @GetMapping("/cancalOrder")
     @ApiOperation(value = "取消订单", notes = "取消订单")
-    public ResultData cancalOrder(String ordersn){
-        Boolean aBoolean = repastService.cancalOrder(ordersn);
-        if(aBoolean==true){
-            return success("取消订单成功");
-        }else {
-            return failed("取消订单失败");
-        }
+    public ResultData cancalOrder(String ordersn,String token){
+        return repastService.cancalOrder(ordersn,token);
     }
 
     /**
@@ -128,13 +47,9 @@ public class OrderController extends BaseController {
      */
     @GetMapping("/affirmReceipt")
     @ApiOperation(value = "确认收货", notes = "确认收货")
-    public ResultData affirmReceipt(String orderSn){
-        Boolean aBoolean = repastService.affirmReceipt(orderSn);
-        if(aBoolean==true){
-            return success("收货成功");
-        }else {
-            return failed("收货失败");
-        }
+    public ResultData affirmReceipt(String orderSn,String token){
+        return repastService.affirmReceipt(orderSn,token);
+
     }
 
     /**
@@ -145,55 +60,10 @@ public class OrderController extends BaseController {
      */
     @GetMapping("/toRestoreOrder")
     @ApiOperation(value = "恢复下单", notes = "恢复下单")
-    public ResultData toRestoreOrder(String ordersn, String openid){
-        Map<String, Object> jsonObject = repastService.toRestoreOrder(ordersn, openid);
-        if(jsonObject!=null){
-            return success("支付成功",jsonObject);
-        }
-        return failed("支付失败");
+    public ResultData toRestoreOrder(String ordersn, String openid,String token){
+        return repastService.toRestoreOrder(ordersn, openid,token);
     }
-    /**
-     * 点击提交订单后，将预定单中所有信息存入订单
-     * @param order
-     * @return
-     */
-//    @ApiOperation(value = "提交订单", notes = "执行保存订单操作")
-//    @PostMapping("/saveOrderInfo")
-//    public ResultData savePreOrderInfo(Order order){
-//        Boolean aBoolean = repastService.savePreOrderInfo(order);
-//        if(true==aBoolean){
-//            return success("提交成功");
-//        }
-//        return failed("提交失败");
-//    }
 
-    /**
-     * 用户购买成功后，可查看刚下的订单
-     * @param id
-     * @return
-     */
-//    @GetMapping("/getOrderInfo")
-//    @ApiOperation(value = "查看订单", notes = "获取订单信息")
-//    public ResultData getOrderInfoById(@RequestParam("id") Long id){
-//        Order orderInfo = repastService.getOrderInfoById(id);
-//        System.out.println(orderInfo);
-//        if(null!=orderInfo){
-//            return success("查询成功",orderInfo);
-//        }else {
-//            return failed("该订单不存在");
-//        }
-//    }
-
-//    /**
-//     * 提交订单，需要获取购物车中用户选择所有的商品信息
-//     * @param memberId
-//     * @return
-//     */
-//    @GetMapping("/getCartAllProductByPrimary")
-//    @ApiOperation(value = "查询购物车商品", notes = "获取购物车商品信息")
-//    public ResultData getCartAllProductByPrimary(Long memberId){
-//        return null;
-//    }
 
     /**
      * 通过订单编号查询订单信息

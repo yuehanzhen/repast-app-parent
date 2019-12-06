@@ -1,9 +1,12 @@
 package com.aaa.lee.app.base;
 
+import com.aaa.lee.app.domain.Member;
+import com.aaa.lee.app.mapper.MemberMapper;
 import com.aaa.lee.app.page.PageInfos;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -42,6 +45,8 @@ public abstract class BaseService<T> {
      * @throws 
     **/
     public abstract Mapper<T> getMapper();
+    @Autowired
+    private MemberMapper memberMapper;
 
     /**
      * @author Seven Lee
@@ -196,6 +201,22 @@ public abstract class BaseService<T> {
         PageInfo<T> pageInfo = new PageInfo<T>(list);
         pageInfo.setTotal(this.selectCount(pageInfos.getT()));
         return pageInfo;
+    }
+
+    /**
+     * 验证token封装
+     * @param token
+     * @return
+     */
+    public Member checkToken(String token){
+        //传进来的token不为空
+        if (null != token){
+            Member member = memberMapper.selectMemberId(token);
+            String memberToken = member.getToken();
+            //通过token去查询数据库，看数据库是否有该信息
+            if (null != memberToken) return member;
+        }
+        return null;
     }
 
 }

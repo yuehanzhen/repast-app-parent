@@ -147,27 +147,7 @@ public class OrderService extends BaseService<Order> {
         if(i>0){
             map.put("code","200");
             map.put("msg","提交订单成功");
-//            OrderOverTimeClose.getInstance().init();
-//            ExecutorService service = Executors.newFixedThreadPool(10);
-//            Runnable run = new Runnable() {
-//                @Override
-//                public void run() {
-//                    // 创建初始订单
-//                    long time = System.currentTimeMillis();
-//                    String currentTime = DateUtil.getTime(time);
-//                    long aftertime=time+9000;
-//                    String experTime = DateUtil.getTime(aftertime);
-//                    OrderInfo orderInfo = new OrderInfo();
-//                    orderInfo.setOrderNo(order.getId().toString());
-//                    orderInfo.setStatus(order.getStatus().toString());
-//                    orderInfo.setCreateTime(currentTime);
-//                    orderInfo.setExpTime(experTime);
-//                    System.out.println(orderInfo.getOrderNo()+"+++++++"+orderInfo.getStatus()+"+++++"+orderInfo.getCreateTime()+"++++"+orderInfo.getExpTime());
-//                    //定时15分钟关闭订单
-//                    OrderOverTimeClose.getInstance().orderPutQueue(orderInfo, currentTime,  experTime);
-//                }
-//         };
-           // service.execute(run);
+
 
             //加入延时队列，等待超时取消
             DelayCancelOrderTaskManager delayCancelOrderTaskManager = DelayCancelOrderTaskManager.getInstance();

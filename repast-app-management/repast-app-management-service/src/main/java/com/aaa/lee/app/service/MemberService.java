@@ -68,5 +68,18 @@ public class MemberService extends BaseService<Member> {
         }
         return false;
     }
+    /**
+     * 通过token查询当前用户
+     * @param token
+     * @return
+     */
+    public Boolean getMemberByToken(String token){
+        Member member = memberMapper.getMemberByToken(token);
+        if(null!=member){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }
