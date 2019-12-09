@@ -3,6 +3,7 @@ package com.aaa.lee.app.service;
 import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.fallback.RepastFallBackFactory;
+import com.aaa.lee.app.vo.OmsOrderAndShopInfoVo;
 import com.aaa.lee.app.vo.OmsOrderVo;
 import com.aaa.lee.app.vo.OrderInfoVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
@@ -29,6 +30,12 @@ import java.util.Map;
 @FeignClient(value = "userinfo-interface-provider", fallbackFactory = RepastFallBackFactory.class)
 public interface IRepastService {
 
+    /**
+     * 展示我的订单
+     * @return
+     */
+    @GetMapping("/showOrder")
+    List<OmsOrderAndShopInfoVo> showOrder(@RequestParam("token") String token, @RequestParam("orderStatus") Integer orderStatus);
     /**
      * @author Seven Lee
      * @description
@@ -88,6 +95,13 @@ public interface IRepastService {
     **/
     @GetMapping("/getProductByShopId")
     List<Product> getProductByShopId(Long shopId);
+    /**
+     * 登陆验证token
+     * @param token
+     * @return
+     */
+    @GetMapping("/token")
+    String selectToken(@RequestParam("token") String token);
 
     /**
      * 通过店铺id和用户id获取当前用户所选购当前商家的商品
@@ -203,21 +217,21 @@ public interface IRepastService {
      * @return
      */
     @PostMapping("/addOrder")
-    Boolean addOrder(@RequestBody List<OmsOrderVo> orderVo);
+    Boolean addOrder(@RequestBody List<OmsOrderVo> orderVo,@RequestParam("token") String token);
     /**
      * 修改订单状态
      * @param statuID
      * @return
      */
     @PostMapping("/deleteOrder")
-    Boolean updateOrder(@RequestParam("statuID") Long statuID);
+    Boolean updateOrder(@RequestParam("statuID") Long statuID,@RequestParam("token") String token);
     /**
      * 获取订单页面商品信息
      * @param memberId
      * @return
      */
     @PostMapping("/getOrderInfo")
-    List<OrderInfoVo> getOrderInfo();
+    List<OrderInfoVo> getOrderInfo(@RequestParam("token") String token);
     /**
      * 订单购物车
      */

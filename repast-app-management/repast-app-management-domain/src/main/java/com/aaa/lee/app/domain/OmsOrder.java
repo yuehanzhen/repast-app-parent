@@ -241,6 +241,11 @@ public class OmsOrder implements Serializable {
      * 订单备注
      */
     private String note;
+    /**
+     * 订单状态
+     */
+    @Column(name = "order_status")
+    private Integer orderStatus ;
 
     /**
      * 确认收货状态：0->未确认；1->已确认

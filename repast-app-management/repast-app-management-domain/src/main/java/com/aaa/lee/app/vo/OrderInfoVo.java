@@ -22,6 +22,8 @@ public class OrderInfoVo implements Serializable {
     private String shopName;
     //商品名字
     private String productName;
+    //商品id
+    private long productId;
     //购买数量
     private int quantity;
     //商品价格
@@ -34,4 +36,6 @@ public class OrderInfoVo implements Serializable {
     private Date createDate;
     //是否删除状态码
     private Integer deleteStatus;
+    //购物车商品分类状态码
+    private Integer productServiceStatus;
 }

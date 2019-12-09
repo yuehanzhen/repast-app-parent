@@ -28,14 +28,18 @@ public class OrderInfoController extends BaseController {
      */
     @PostMapping("/getOrderInfo")
     @ApiOperation(value = "查询购物车的数据加入到订单", notes = "查询购物车的数据加入到订单")
-    public ResultData getOrderInfo(){
-        List<OrderInfoVo> orderInfo = iRepastService.getOrderInfo();
-        System.out.println("orderInfo"+orderInfo);
-        if(null!=orderInfo){
-            return success("查询购物车数据成功",orderInfo);
-        }else {
-            return failed("查询购物车数据失败");
+    public ResultData getOrderInfo(String token){
+        if(null!=token){
+            String s = iRepastService.selectToken(token);
+            if(null!=s){
+                List<OrderInfoVo> orderInfo = iRepastService.getOrderInfo(token);
+                System.out.println("orderInfo"+orderInfo);
+                if(null!=orderInfo){
+                    return success("查询购物车数据成功",orderInfo);
+                }
+            }
         }
+        return failed("查询购物车数据失败");
 
     }
 

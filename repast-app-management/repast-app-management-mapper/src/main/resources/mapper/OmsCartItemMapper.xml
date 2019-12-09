@@ -59,4 +59,7 @@ where  oci.member_id = #{memberId} and oci.shop_id = #{shopId} and um.id = oci.m
   <select id="getShopName" resultType="java.lang.String" parameterType="long">
     SELECT name FROM ums_shop_information where id=#{shopId}
   </select>
+  <select id="getMemberId" resultType="java.lang.Long" parameterType="java.lang.String">
+      SELECT id from ums_member where token=#{token}
+    </select>
 </mapper>

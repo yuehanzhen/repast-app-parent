@@ -9,6 +9,7 @@ import com.aaa.lee.app.utils.delay.DelayCancelOrderTask;
 import com.aaa.lee.app.utils.delay.DelayCancelOrderTaskManager;
 
 import com.aaa.lee.app.vo.OmsOrderVo;
+import com.aaa.lee.app.vo.OrderInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -42,6 +43,8 @@ public class OrderService extends BaseService<Order> {
     @Autowired
     private OrderItemMapper orderItemMapper;
     @Autowired
+    private MemberDefaultAddressMapper memberDefaultAddressMapper;
+    @Autowired
     private OmsCartItemMapper omsCartItemMapper;
     @Autowired
     private OmsOrderMapper omsOrderMapper;
@@ -57,6 +60,7 @@ public class OrderService extends BaseService<Order> {
     public Mapper<Order> getMapper() {
         return orderMapper;
     }
+
 
 
 
@@ -409,15 +413,16 @@ public class OrderService extends BaseService<Order> {
      * @param redisService
      * @return
      */
-    public Boolean deleteOrder(Long statuId,RedisService redisService){
+    public Boolean deleteOrder(Long statuId,String token){
         Integer integer =null;
         Integer integer1=null;
         //假设statuid为1的时候 未付款完成，就是放弃付款。改为无效订单 5
         //如果为0，说明付款成功，状态码改为待发货 1
         // 1.从redis中获取用户信息(redis就相当于session)
-        String mrbString = redisService.get(REDIS_KEY);
+        /*String mrbString = redisService.get(REDIS_KEY);
         Member member = JSONUtil.toObject(mrbString, Member.class);
-        Long memberId = member.getId();
+        Long memberId = member.getId();*/
+        Long memberId = omsOrderMapper.getMemberId(token);
         if(PAYMENT_FAILED==statuId){
             integer = omsOrderMapper.updateStatusFailed(memberId);
             //修改购物车状态码
@@ -442,7 +447,32 @@ public class OrderService extends BaseService<Order> {
      * @return
      */
     @Transactional
-    public  Boolean addOrder(List<OmsOrderVo> omsOrderVos, RedisService redisService){
+    public  Boolean addOrder(List<OmsOrderVo> omsOrderVos, String token,OrderCartService orderCartService){
+        List<OrderInfoVo> orderInfo = orderCartService.getOrderInfo(token);
+        System.out.println("orderInfo"+orderInfo);
+        Integer deleteStatus;
+        long shopId = 0;
+        long productId=0;
+        Date createDate=null;
+        String memberNickname=null;
+        String productPic =null;
+        BigDecimal price=null;
+        String productName=null;
+        int quantity = 0;
+        Integer productServiceStatus = null;
+        String shopName=null;
+        for (OrderInfoVo orderInfoVo : orderInfo) {
+            deleteStatus = orderInfoVo.getDeleteStatus();
+            shopId = orderInfoVo.getShopId();
+            productId = orderInfoVo.getProductId();
+            memberNickname = orderInfoVo.getMemberNickname();
+            productPic = orderInfoVo.getProductPic();
+            price = orderInfoVo.getPrice();
+            productName = orderInfoVo.getProductName();
+            productServiceStatus = orderInfoVo.getProductServiceStatus();
+            shopName = orderInfoVo.getShopName();
+            quantity = orderInfoVo.getQuantity();
+        }
         //订单表
         OmsOrder omsOrder = new OmsOrder();
         //订单中的商品
@@ -456,29 +486,6 @@ public class OrderService extends BaseService<Order> {
             //code加入到orderSn属性中
             String orderCode = OrderCodeFactory.getOrderCode(lTime);
             //获取VO类型的各种参数
-            for (OmsOrderVo omsOrderVo :omsOrderVos){
-                System.out.println("遍历出来的VO类型"+omsOrderVo.toString());
-                /**
-                 获取订单中所包含的商品的信息，存入到数据库中
-                 订单编号，商品id，商品图片，商品名字，销售价格，购买数量
-                 */
-                //1.先从VO类的参数中取出各种属性的值
-                BigDecimal price =omsOrderVo.getProductPrice();
-                String productName =omsOrderVo.getProductName();
-                Integer productQuantity = omsOrderVo.getProductQuantity();
-                Long productId = omsOrderVo.getProductId();
-                //2.放到订单相关的商品对应的实体类中
-                omsOrderItem.setOrderSn(orderCode)
-                        .setProductId(productId)
-                        .setProductName(productName)
-                        .setProductPrice(price)
-                        .setProductQuantity(productQuantity);
-                System.out.println("omsOrderItem实体类的数据"+omsOrderItem.toString());
-                //3.把订单相关的商品的实体类当做参数存入到订单相关商品数据库表中
-                //自定义mapper方法
-                int insert = omsOrderItemMapper.insert(omsOrderItem);
-                System.out.println(1+"======="+"这是订单详情页");
-            }
             Date date1 = new Date();
             String formatDate = null;
             //HH表示24小时制；
@@ -492,55 +499,99 @@ public class OrderService extends BaseService<Order> {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            int insert = 0;
+            Long memberId =0L;
+            //不全部用前台传的东西，一部分使用购物车查出来的
             for (OmsOrderVo omsOrderVo2 : omsOrderVos){
                 //获取到用户id，商铺id，订单编号，提交时间，用户名，订单总金额，应付金额
-                Long shopId = omsOrderVo2.getShopId();
-                Long productId = omsOrderVo2.getProductId();
+                //shopId = omsOrderVo2.getShopId();
+                //Long productId = omsOrderVo2.getProductId();
+                System.out.println("productId"+productId);
+                //System.out.println("productId"+productId);
                 //Long memberId = omsOrderVo2.getMemberId();
                 //登录之后从redis中获取到用户的id        memberId
-                String mrbString = redisService.get(REDIS_KEY);
+                /*String mrbString = redisService.get(REDIS_KEY);
                 Member member = JSONUtil.toObject(mrbString, Member.class);
-                Long memberId = member.getId();
-
+                memberId = member.getId();*/
+                memberId = omsOrderMapper.getMemberId(token);
+                MemberDefaultAddress memberDefaultAddress = memberDefaultAddressMapper.getMemberDefaultAddress(memberId);
+                String receiverName = memberDefaultAddress.getName();
+                String receiverPhone = memberDefaultAddress.getPhoneNumber();
                 BigDecimal payAmount = omsOrderVo2.getPayAmount();
                 BigDecimal totalAmount = omsOrderVo2.getTotalAmount();
                 //Long cartId = omsOrderVo2.getCartId();
-                String receiverName = omsOrderVo2.getReceiverName();
-                String receiverPhone = omsOrderVo2.getReceiverPhone();
-
-                //把数据存到订单对应的实体类中
-                omsOrder.setMemberId(memberId)
-                        .setShopId(shopId)
-                        .setOrderSn(orderCode)
-                        .setCreateTime(strD)
-                        .setTotalAmount(totalAmount)
-                        .setPayAmount(payAmount)
-                        //收货人信息从默认收货地址中查询，不从前台获取
-                        .setReceiverName(receiverName)
-                        .setReceiverPhone(receiverPhone)
-                        //把订单状态改为待付款
-                        .setStatus(0)
-                        //把订单状态改为未删除  code码为0
-                        .setDeleteStatus(0);
-
-                //算术异常，测试事务回滚
-                //int c = 1/0;
-                //把订单实体类加入到数据库中
-                int insert = omsOrderMapper.insert(omsOrder);
-                //加入订单页之后，修改状态码为未付款 ,取消功能，直接在上边setStatus为0
-                //omsOrderMapper.updateStatusWait(memberId);
-                System.out.println("这是订单页");
-
-                if(insert>0){
-                    Integer i = omsCartItemMapper.updateCartStatus(memberId);
-                    //int i = omsCartItemMapper.updateByPrimaryKey(omsCartItem);
-                    System.out.println(i+"======="+"这是修改购物车的状态码");
-                    if(i>0){
-                        System.out.println("true");
-                        return  true;
-                    }else {
-                        return  false;
+                //在这里判断库存是否够
+                //Integer productQuantity1 = omsOrderVo2.getProductQuantity();
+                Integer stock = omsOrderMapper.stock(productId);
+                System.out.println("stock"+stock);
+                //System.out.println("productQuantity"+quantity);
+                //如果库存足够则继续向下执行，库存不够return false结束代码
+                if(stock>=quantity){
+                    //把数据存到订单对应的实体类中
+                    omsOrder.setMemberId(memberId)
+                            .setShopId(shopId)
+                            //不需要ordersn  id 对应商品详情中的Orderid
+                            .setOrderSn(orderCode)
+                            .setCreateTime(strD)
+                            .setTotalAmount(totalAmount)
+                            .setPayAmount(payAmount)
+                            //收货人信息从默认收货地址中查询，不从前台获取
+                            .setReceiverName(receiverName)
+                            .setReceiverPhone(receiverPhone)
+                            //把订单状态改为待付款
+                            .setStatus(0)
+                            //把订单状态改为未删除  code码为0
+                            .setDeleteStatus(0);
+                    if(1==productServiceStatus){
+                        omsOrder.setOrderStatus(0);
+                    }else if (2==productServiceStatus){
+                        omsOrder.setOrderStatus(4);
                     }
+                    //把订单实体类加入到数据库中
+                    insert = omsOrderMapper.insert(omsOrder);
+                    //加入订单页之后，修改状态码为未付款 ,取消功能，直接在上边setStatus为0
+                    //omsOrderMapper.updateStatusWait(memberId);
+                    //System.out.println("这是订单页");
+                }
+            }
+            for (OmsOrderVo omsOrderVo :omsOrderVos){
+                //System.out.println("遍历出来的VO类型"+omsO derVo.toString());
+                /**
+                 获取订单中所包含的商品的信息，存入到数据库中
+                 订单编号，商品id，商品图片，商品名字，销售价格，购买数量
+                 */
+                //1.先从VO类的参数中取出各种属性的值
+                price =omsOrderVo.getProductPrice();
+                //productName =omsOrderVo.getProductName();
+                //Integer productQuantity = omsOrderVo.getProductQuantity();
+                Long productId2 = omsOrderVo.getProductId();
+
+                Long orderId = omsOrderMapper.selectLastInsertId();
+                //System.out.println("从omsOrder表中获取的id"+orderId);
+                Integer stock = omsOrderMapper.stock(productId2);
+                if(stock>=quantity){
+                    //2.放到订单相关的商品对应的实体类中
+                    omsOrderItem.setOrderId(orderId)
+                            .setProductId(productId2)
+                            .setProductName(productName)
+                            .setProductPrice(price)
+                            .setProductQuantity(quantity);
+                    //System.out.println("omsOrderItem实体类的数据"+omsOrderItem.toString());
+                    //3.把订单相关的商品的实体类当做参数存入到订单相关商品数据库表中
+                    //自定义mapper方法
+                    omsOrderItemMapper.insert(omsOrderItem);
+                    //System.out.println(1+"======="+"这是订单详情页");
+                }
+            }
+            if(insert>0){
+                Integer i = omsCartItemMapper.updateCartStatus(memberId);
+                //int i = omsCartItemMapper.updateByPrimaryKey(omsCartItem);
+                //System.out.println(i+"======="+"这是修改购物车的状态码");
+                if(i>0){
+                    //System.out.println("true");
+                    return  true;
+                }else {
+                    return  false;
                 }
             }
         }catch (Exception e){
@@ -549,8 +600,4 @@ public class OrderService extends BaseService<Order> {
         }
         return  false;
     }
-
-
-
-
 }

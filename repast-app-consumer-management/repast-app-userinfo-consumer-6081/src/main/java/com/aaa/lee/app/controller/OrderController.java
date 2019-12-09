@@ -121,13 +121,17 @@ public class OrderController extends BaseController {
     private IRepastService iRepastService;
     @PostMapping("/addOrder")
     @ApiOperation(value = "添加订单", notes = "加入购物车的数据到订单详情和订单")
-    public ResultData addOrder(@RequestBody List<OmsOrderVo> orderVo){
-        Boolean aBoolean = iRepastService.addOrder(orderVo);
-        if(aBoolean){
-            return success("添加订单成功");
-        }else {
-            return failed("添加订单失败");
+    public ResultData addOrder(@RequestBody List<OmsOrderVo> orderVo,@RequestParam String token){
+        if(null!=token){
+            String s = iRepastService.selectToken(token);
+            if(null!=s){
+                Boolean aBoolean = iRepastService.addOrder(orderVo,token);
+                if(aBoolean){
+                    return success("添加订单成功");
+                }
+            }
         }
+        return failed("添加订单失败");
     }
     /**
      * 根据是否付款成功的状态码修改订单状态，如果未付款直接修改状态为无效订单
@@ -137,13 +141,17 @@ public class OrderController extends BaseController {
      */
     @PostMapping("deleteOrder")
     @ApiOperation(value = "设置无效订单", notes = "未付款的话设置无效订单")
-    public ResultData updateOrder(@RequestParam("statuID") Long statuID){
-        Boolean aBoolean = iRepastService.updateOrder(statuID);
-        if(aBoolean){
-            return success("修改状态码成功");
-        }else {
-            return failed("修改状态码失败");
+    public ResultData updateOrder(@RequestParam("statuID") Long statuID,String token){
+        if(null!=token){
+            String s = iRepastService.selectToken(token);
+            if(null!=s){
+                Boolean aBoolean = iRepastService.updateOrder(statuID,token);
+                if(aBoolean){
+                    return success("修改状态码成功");
+                }
+            }
         }
+        return failed("修改状态码失败");
     }
 
 

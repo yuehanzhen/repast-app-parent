@@ -81,4 +81,69 @@
   <update id="updateStatusFinish">
         update oms_order set status = 1 where member_id=#{member_id}
     </update>
+  <select id="getMemberId" resultType="java.lang.Long" parameterType="java.lang.String">
+      SELECT id from ums_member where token=#{token}
+    </select>
+  <select id="stock" resultType="java.lang.Integer" parameterType="long">
+    select stock from pms_sku_stock where product_id=#{productId}
+  </select>
+  <select id="selectLastInsertId" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </select>
+  <resultMap id="Map" type="com.aaa.lee.app.vo.OmsOrderAndShopInfoVo" >
+    <result column="order_sn" property="orderSn" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="order_type" property="orderType" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="id" property="shopId" jdbcType="BIGINT" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getOrderAndShopInfo" parameterType="java.lang.Long" resultMap="Map">
+    SELECT DISTINCT
+    oo.order_sn,
+    oo.create_time,
+    oo.total_amount,
+    oo.pay_amount,
+    oo.order_type,
+    usi.name,
+    usi.id,
+    usi.images,
+    oo.order_status,
+    usi.phone
+    FROM
+    oms_order oo
+    INNER JOIN ums_shop_information usi ON oo.shop_id = usi.id
+    WHERE
+    oo.member_id =#{param1}
+    <choose>
+      <when test="param2==0">
+        and order_status =0
+      </when>
+      <when test="param2==1">
+        and order_status =1
+      </when>
+      <when test="param2==2">
+        and order_status =2
+      </when>
+      <when test="param2==3">
+        and order_status =3
+      </when>
+      <when test="param2==4">
+        and order_status =4
+      </when>
+      <when test="param2==5">
+        and order_status =5
+      </when>
+      <otherwise>
+        AND 1 = 1
+      </otherwise>
+    </choose>
+    ORDER BY
+    oo.create_time DESC
+
+  </select>
 </mapper>

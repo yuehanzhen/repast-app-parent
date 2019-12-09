@@ -8,6 +8,7 @@ import com.aaa.lee.app.vo.ProductVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class OrderInfoController {
      */
 
     @PostMapping("/getOrderInfo")
-    public List<OrderInfoVo> getOrderInfo(){
-        List<OrderInfoVo> orderInfo = orderCartService.getOrderInfo(redisService);
+    public List<OrderInfoVo> getOrderInfo(@RequestParam("token") String token){
+        List<OrderInfoVo> orderInfo = orderCartService.getOrderInfo(token);
         return orderInfo;
     }
     /**

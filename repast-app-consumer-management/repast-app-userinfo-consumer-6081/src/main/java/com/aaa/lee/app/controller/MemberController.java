@@ -3,6 +3,7 @@ package com.aaa.lee.app.controller;
 import com.aaa.lee.app.base.BaseController;
 import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.Member;
+import com.aaa.lee.app.domain.MemberDefaultAddress;
 import com.aaa.lee.app.domain.MemberReceiveAddress;
 import com.aaa.lee.app.service.IRepastService;
 import io.swagger.annotations.Api;
@@ -60,13 +61,17 @@ public class MemberController extends BaseController {
     **/
     @GetMapping("/receive")
     @ApiOperation(value = "收获地址", notes = "获取会员收获地址列表")
-    public ResultData getMemberReceiveAddress() {
-        List<MemberReceiveAddress> receiveList = repastService.getMemberReceiveAddress();
-        if(receiveList.size() > 0) {
-            return success(receiveList);
-        } else {
-            return failed();
+    public ResultData getMemberReceiveAddress(String token) {
+        if (null != token) {
+            String s = repastService.selectToken(token);
+            if (null != s) {
+                MemberDefaultAddress defaultAddress = repastService.getDefaultAddress(token);
+                if (null != defaultAddress) {
+                    return success("查询默认地址成功", defaultAddress);
+                }
+            }
         }
+        return failed();
     }
 
 }

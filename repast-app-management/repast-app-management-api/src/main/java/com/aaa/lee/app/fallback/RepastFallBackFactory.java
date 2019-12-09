@@ -3,6 +3,7 @@ package com.aaa.lee.app.fallback;
 import com.aaa.lee.app.base.ResultData;
 import com.aaa.lee.app.domain.*;
 import com.aaa.lee.app.service.IRepastService;
+import com.aaa.lee.app.vo.OmsOrderAndShopInfoVo;
 import com.aaa.lee.app.vo.OmsOrderVo;
 import com.aaa.lee.app.vo.OrderInfoVo;
 import com.aaa.lee.app.vo.ShopInfoVo;
@@ -27,6 +28,11 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
     @Override
     public IRepastService create(Throwable throwable) {
         IRepastService repastService = new IRepastService() {
+            @Override
+            public List<OmsOrderAndShopInfoVo> showOrder(String token, Integer orderStatus) {
+                return null;
+            }
+
             @Override
             public Boolean doLogin(Member member) {
                 System.out.println("测试登录熔断数据");
@@ -54,6 +60,11 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             @Override
             public List<Product> getProductByShopId(Long shopId) {
                 System.out.println("测试主键查询商品熔断数据");
+                return null;
+            }
+
+            @Override
+            public String selectToken(String token) {
                 return null;
             }
 
@@ -189,26 +200,22 @@ public class RepastFallBackFactory implements FallbackFactory<IRepastService> {
             }
 
             @Override
-            public MemberDefaultAddress getDefaultAddress() {
-                System.out.println("测试获取默认收货地址");
+            public MemberDefaultAddress getDefaultAddress(String token) {
                 return null;
             }
 
             @Override
-            public Boolean addOrder(List<OmsOrderVo> orderVo) {
-                System.out.println("测试加入订单");
+            public Boolean addOrder(List<OmsOrderVo> orderVo, String token) {
                 return null;
             }
 
             @Override
-            public Boolean updateOrder(Long statuID) {
-                System.out.println("测试修改订单状态码");
+            public Boolean updateOrder(Long statuID, String token) {
                 return null;
             }
 
             @Override
-            public List<OrderInfoVo> getOrderInfo() {
-                System.out.println("测试从购物车中得到商品信息");
+            public List<OrderInfoVo> getOrderInfo(String token) {
                 return null;
             }
 

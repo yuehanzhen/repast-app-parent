@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.app.mapper.UmsMemberMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.app.domain.UmsMember" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="shop_id" property="shopId" jdbcType="BIGINT" />
+    <result column="member_level_id" property="memberLevelId" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="job" property="job" jdbcType="VARCHAR" />
+    <result column="personalized_signature" property="personalizedSignature" jdbcType="VARCHAR" />
+    <result column="source_type" property="sourceType" jdbcType="INTEGER" />
+    <result column="integration" property="integration" jdbcType="INTEGER" />
+    <result column="growth" property="growth" jdbcType="INTEGER" />
+    <result column="luckey_count" property="luckeyCount" jdbcType="INTEGER" />
+    <result column="history_integration" property="historyIntegration" jdbcType="INTEGER" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
+    <result column="token" property="token" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ums_member
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.aaa.lee.app.domain.UmsMember" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into ums_member (shop_id, member_level_id, username, 
+      password, nickname, phone, 
+      status, create_time, icon, 
+      gender, birthday, city, 
+      job, personalized_signature, source_type, 
+      integration, growth, luckey_count, 
+      history_integration, parent_id, open_id, 
+      session_key, token)
+    values (#{shopId,jdbcType=BIGINT}, #{memberLevelId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{icon,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{city,jdbcType=VARCHAR}, 
+      #{job,jdbcType=VARCHAR}, #{personalizedSignature,jdbcType=VARCHAR}, #{sourceType,jdbcType=INTEGER}, 
+      #{integration,jdbcType=INTEGER}, #{growth,jdbcType=INTEGER}, #{luckeyCount,jdbcType=INTEGER}, 
+      #{historyIntegration,jdbcType=INTEGER}, #{parentId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, 
+      #{sessionKey,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.aaa.lee.app.domain.UmsMember" >
+    update ums_member
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      member_level_id = #{memberLevelId,jdbcType=BIGINT},
+      username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      icon = #{icon,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=DATE},
+      city = #{city,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      personalized_signature = #{personalizedSignature,jdbcType=VARCHAR},
+      source_type = #{sourceType,jdbcType=INTEGER},
+      integration = #{integration,jdbcType=INTEGER},
+      growth = #{growth,jdbcType=INTEGER},
+      luckey_count = #{luckeyCount,jdbcType=INTEGER},
+      history_integration = #{historyIntegration,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      open_id = #{openId,jdbcType=VARCHAR},
+      session_key = #{sessionKey,jdbcType=VARCHAR},
+      token = #{token,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, shop_id, member_level_id, username, password, nickname, phone, status, 
+    create_time, icon, gender, birthday, city, job, personalized_signature, source_type, 
+    integration, growth, luckey_count, history_integration, parent_id, open_id, session_key, 
+    token
+    from ums_member
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, shop_id, member_level_id, username, password, nickname, phone, status, 
+    create_time, icon, gender, birthday, city, job, personalized_signature, source_type, 
+    integration, growth, luckey_count, history_integration, parent_id, open_id, session_key, 
+    token
+    from ums_member
+  </select>
+  <select id="getMemberId" resultType="java.lang.Long" parameterType="java.lang.String">
+    select  id from ums_member where token=#{token}
+    </select>
+
+</mapper>

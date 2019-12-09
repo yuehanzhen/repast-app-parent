@@ -15,5 +15,7 @@ public interface OmsCartItemMapper extends Mapper<OmsCartItem> {
     List<OrderInfoVo> getOrderInfo(Long memeberId);
     String getShopName(Long shopId);
     Integer updateCartStatus(Long memberId);
+    Long getMemberId(String token);
+
 
 }

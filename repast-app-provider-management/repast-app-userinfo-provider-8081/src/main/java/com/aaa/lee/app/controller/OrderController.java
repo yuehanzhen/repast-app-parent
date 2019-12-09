@@ -38,6 +38,8 @@ public class OrderController extends BaseController {
     private OrderItemService orderItemService;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    private OrderCartService orderCartService;
 
 
     /**
@@ -186,8 +188,8 @@ public class OrderController extends BaseController {
      * @return
      */
     @PostMapping("/addOrder")
-    public Boolean addOrder(@RequestBody List<OmsOrderVo> omsOrder){
-        Boolean aBoolean = orderService.addOrder(omsOrder,redisService);
+    public Boolean addOrder(@RequestBody List<OmsOrderVo> omsOrder,@RequestParam("token") String token){
+        Boolean aBoolean = orderService.addOrder(omsOrder,token,orderCartService);
         return aBoolean;
     }
     /**
@@ -196,8 +198,8 @@ public class OrderController extends BaseController {
      * @return
      */
     @PostMapping("deleteOrder")
-    public Boolean updateOrder(@RequestParam Long statuID){
-        Boolean aBoolean = orderService.deleteOrder(statuID, redisService);
+    public Boolean updateOrder(@RequestParam Long statuID,@RequestParam("token") String token){
+        Boolean aBoolean = orderService.deleteOrder(statuID, token);
         return aBoolean;
     }
 
