@@ -36,7 +36,6 @@ public class OrderCartService extends BaseService<OmsCartItem> {
     public List<OrderInfoVo> getOrderInfo(String token){
         Integer deleteStatus = null;
         ArrayList<OrderInfoVo> orderInfoVos2 = new ArrayList<>();
-
         /*String mrbString = redisService.get(REDIS_KEY);
         Member member = JSONUtil.toObject(mrbString, Member.class);
         Long memberId = member.getId();*/
@@ -49,7 +48,7 @@ public class OrderCartService extends BaseService<OmsCartItem> {
             //System.out.println("OrderCartService层得到的数据"+orderInfo);
             deleteStatus = orderInfo.getDeleteStatus();
             if(CART_HIDE==deleteStatus){
-                System.out.println("if里面中的orderInfo"+orderInfo);
+                //System.out.println("if里面中的orderInfo"+orderInfo);
                 long shopId = orderInfo.getShopId();
                 //根据店铺ID查询店铺名字
                 String shopName = omsCartItemMapper.getShopName(shopId);

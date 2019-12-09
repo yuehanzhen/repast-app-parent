@@ -23,11 +23,11 @@ public class ShowOrderService extends BaseService<OmsOrder> {
         return omsOrderMapper;
     }
     public List<OmsOrderAndShopInfoVo> showOrder(String token,Integer orderStatus){
-        System.out.println("token"+token+"orderStatus"+orderStatus);
+        //System.out.println("token"+token+"orderStatus"+orderStatus);
         Long memberId = umsMemberMapper.getMemberId(token);
-        System.out.println("memberId"+memberId);
+        //System.out.println("memberId"+memberId);
         List<OmsOrderAndShopInfoVo> orderAndShopInfo = omsOrderMapper.getOrderAndShopInfo(memberId,orderStatus);
-        System.out.println(orderAndShopInfo);
+        //System.out.println(orderAndShopInfo);
         if(null!=orderAndShopInfo){
             return orderAndShopInfo;
         }else {

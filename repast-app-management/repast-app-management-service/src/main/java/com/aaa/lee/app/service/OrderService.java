@@ -137,7 +137,8 @@ public class OrderService extends BaseService<Order> {
                 orderItem.setProductSkuCode(cartItem.getProductSkuCode());
                 orderItem.setProductSkuId(cartItem.getProductSkuId());
             int insert = orderItemMapper.insert(orderItem);
-            System.out.println(orderItem.getId());
+            //
+            // System.out.println(orderItem.getId());
             shopOrderSettingInfo = orderSettingMapper.getShopOrderSettingInfo(cartItem.getShopId());
             order.setShopId(cartItem.getShopId());
         }
@@ -146,7 +147,7 @@ public class OrderService extends BaseService<Order> {
         BigDecimal totalAmount = getTotalAmount(cartItemList);
         order.setTotalAmount(totalAmount);
         int i = orderMapper.insert(order);
-        System.out.println(order.getId());
+        //tem.out.println(order.getId());
 
         if(i>0){
             map.put("code","200");
@@ -376,7 +377,7 @@ public class OrderService extends BaseService<Order> {
     public List<OrderReturnApply> getOrderByOrderId(Long orderId){
         List<OrderReturnApply> orderReturnApplies = orderReturnApplyMapper.selectOrderByOrderSId(orderId);
         if (orderReturnApplies.size()>0){
-            System.out.println(orderReturnApplies);
+            //System.out.println(orderReturnApplies);
             return orderReturnApplies;
         }
         return null;
@@ -388,7 +389,7 @@ public class OrderService extends BaseService<Order> {
      */
     public Integer insertReason(OrderReturnApply orderReturnApply) {
         int i = orderReturnApplyMapper.insert(orderReturnApply);
-        System.out.println(i);
+        //System.out.println(i);
         if (i > 0) {
             return i;
         }
@@ -449,7 +450,7 @@ public class OrderService extends BaseService<Order> {
     @Transactional
     public  Boolean addOrder(List<OmsOrderVo> omsOrderVos, String token,OrderCartService orderCartService){
         List<OrderInfoVo> orderInfo = orderCartService.getOrderInfo(token);
-        System.out.println("orderInfo"+orderInfo);
+        //System.out.println("orderInfo"+orderInfo);
         Integer deleteStatus;
         long shopId = 0;
         long productId=0;
@@ -506,7 +507,7 @@ public class OrderService extends BaseService<Order> {
                 //获取到用户id，商铺id，订单编号，提交时间，用户名，订单总金额，应付金额
                 //shopId = omsOrderVo2.getShopId();
                 //Long productId = omsOrderVo2.getProductId();
-                System.out.println("productId"+productId);
+                //System.out.println("productId"+productId);
                 //System.out.println("productId"+productId);
                 //Long memberId = omsOrderVo2.getMemberId();
                 //登录之后从redis中获取到用户的id        memberId
@@ -523,7 +524,8 @@ public class OrderService extends BaseService<Order> {
                 //在这里判断库存是否够
                 //Integer productQuantity1 = omsOrderVo2.getProductQuantity();
                 Integer stock = omsOrderMapper.stock(productId);
-                System.out.println("stock"+stock);
+                //.out.println("stock"+stock);
+                //System.out.println("quantity"+quantity);
                 //System.out.println("productQuantity"+quantity);
                 //如果库存足够则继续向下执行，库存不够return false结束代码
                 if(stock>=quantity){
