@@ -5,13 +5,12 @@ import com.aaa.lee.app.service.MemberDefaultAddressService;
 import com.aaa.lee.app.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class DefaultAddressController {
 
-    @Autowired
-    private RedisService redisService;
     @Autowired
     private MemberDefaultAddressService memberDefaultAddressService;
 
@@ -20,8 +19,8 @@ public class DefaultAddressController {
      * @return
      */
     @GetMapping("/getDefaultAddress")
-    public MemberDefaultAddress getDefaultAddress(){
-        MemberDefaultAddress memberDefaultAddress = memberDefaultAddressService.getMemberDefaultAddress(redisService);
+    public MemberDefaultAddress getDefaultAddress(@RequestParam("token") String token){
+        MemberDefaultAddress memberDefaultAddress = memberDefaultAddressService.getMemberDefaultAddress(token);
         return memberDefaultAddress;
     }
 }

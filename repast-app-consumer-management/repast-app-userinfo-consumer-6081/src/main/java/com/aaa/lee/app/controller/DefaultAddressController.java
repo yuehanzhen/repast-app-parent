@@ -21,8 +21,8 @@ public class DefaultAddressController extends BaseController {
     private IRepastService iRepastService;
     @GetMapping("/getDefaultAddress")
     @ApiOperation(value = "默认收获地址", notes = "获取会员默认收获地址")
-    public ResultData getDefaultAddress(){
-        MemberDefaultAddress defaultAddress = iRepastService.getDefaultAddress();
+    public ResultData getDefaultAddress(String token){
+        MemberDefaultAddress defaultAddress = iRepastService.getDefaultAddress(token);
         if(null!=defaultAddress){
             return success("查询默认地址成功",defaultAddress);
         }else{

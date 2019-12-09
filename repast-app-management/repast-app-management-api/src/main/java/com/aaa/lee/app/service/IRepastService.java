@@ -196,7 +196,7 @@ public interface IRepastService {
      * @return
      */
     @GetMapping("/getDefaultAddress")
-    MemberDefaultAddress getDefaultAddress();
+    MemberDefaultAddress getDefaultAddress(@RequestParam("token") String token);
     /**
      * 购物车提交的商品信息，先加入订单，如果未支付，就修改状态吗为无效订单
      * @param orderVo

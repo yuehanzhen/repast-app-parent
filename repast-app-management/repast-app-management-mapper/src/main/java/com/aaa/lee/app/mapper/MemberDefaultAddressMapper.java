@@ -6,5 +6,5 @@ import tk.mybatis.mapper.common.Mapper;
 public interface MemberDefaultAddressMapper extends Mapper<MemberDefaultAddress> {
 
     MemberDefaultAddress getMemberDefaultAddress(Long memberId);
-
+    Long getMemberId(String token);
 }

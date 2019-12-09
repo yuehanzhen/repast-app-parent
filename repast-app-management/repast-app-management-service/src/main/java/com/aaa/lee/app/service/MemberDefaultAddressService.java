@@ -24,11 +24,12 @@ public class MemberDefaultAddressService extends BaseService<MemberDefaultAddres
     }
 
 
-    public MemberDefaultAddress getMemberDefaultAddress(RedisService redisService){
+    public MemberDefaultAddress getMemberDefaultAddress(String token){
         ArrayList<MemberDefaultAddress> memberDefaultAddresses = new ArrayList<>();
-        String mrbString = redisService.get(REDIS_KEY);
+        /*String mrbString = redisService.get(REDIS_KEY);
         Member member = JSONUtil.toObject(mrbString, Member.class);
-        Long memberId = member.getId();
+        Long memberId = member.getId();*/
+        Long memberId = memberDefaultAddressMapper.getMemberId(token);
         MemberDefaultAddress memberDefaultAddress = memberDefaultAddressMapper.getMemberDefaultAddress(memberId);
         return memberDefaultAddress;
     }

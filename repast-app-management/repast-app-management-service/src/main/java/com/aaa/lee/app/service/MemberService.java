@@ -42,13 +42,14 @@ public class MemberService extends BaseService<Member> {
             if(null != mbr) {
                 // 说明从数据库中查询到数据，说明登录成功
                 // 应该把用户对象存入session中，session跨域了，就使用redis解决(redis也有问题)
-                mbr.setPassword(null);
+                /*mbr.setPassword(null);
                 String mbrString = JSONUtil.toJsonString(mbr);
                 String setResult = redisService.set(REDIS_KEY, mbrString);
                 if(OK.equals(setResult.toUpperCase())) {
                     // 说明redis存入成功
-                    return true;
-                }
+
+                }*/
+                return true;
                 /**
                  * 如果涉及到session的跨域:
                  *      如果是ajax，session跨域传递数据必须使用jsonp
